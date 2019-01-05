@@ -6,7 +6,7 @@ class Config(object):
         self.type_sip = 'sip' if kwargs.get('--sip') is True else None
         self.type_pstn = 'pstn' if kwargs.get('--pstn') is True else None
         self.type_all = 'all' if kwargs.get('--all') is True else None
-        self.check_type_dn()
+        self.source_file_db = None
 
     def check_type_dn(self):
         """
@@ -21,3 +21,10 @@ class Config(object):
     @property
     def type_dn(self):
         return self.type_sip or self.type_pstn or self.type_all
+
+    def execute(self):
+        """
+        Инициализация конфигурационных данных,
+        проверка на допустимость и т.д.
+        """
+        self.check_type_dn()
