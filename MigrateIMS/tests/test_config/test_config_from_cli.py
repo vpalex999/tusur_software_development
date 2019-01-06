@@ -1,4 +1,4 @@
-from sources.config import Config
+from sources.config.config import Config
 
 
 def test_make_Config_from_cli_by_type_dn():

@@ -1,4 +1,4 @@
-from sources.config import Config
+from sources.config.config import Config
 
 
 def test_get_source_db_from_file():

@@ -1,5 +1,5 @@
 import pytest
-from sources.config import Config
+from sources.config.config import Config
 
 
 def test_set_type_sip():
