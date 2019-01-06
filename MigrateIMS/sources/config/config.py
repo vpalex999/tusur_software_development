@@ -5,7 +5,7 @@ class Config(object):
 
     all_type_dn = ['sip', 'pstn', 'other']
 
-    def __init__(self, source_db=None, type_dn='sip', cli=None):
+    def __init__(self, sf_db=None, sd_db=None, type_dn='sip', cli=None):
         """
         Аргументы инициализации класса
 
@@ -14,16 +14,17 @@ class Config(object):
         source_db=None -- исходная база данных номеров. Может содержать
            текстовые данные в формате списка или объект. Если не указывается,
            то присваивается пустой список [].
-
+        sf_db -- имя файла с исходной базой данных. По умолчанию None.
+        sd_db -- имя директории с исходной базой данных. По умолчанию None.
         type_dn='sip' -- указывается тип обрабатываемых номеров (sip, pstn, other).
-
         cli=None -- принимаются аргументы  при запуске из командной строки в формате словаря.
 
         """
-        self.source_db = [] if source_db is None else source_db
+        self.source_db = None
+        self.source_file_db = sf_db
+        self.source_dir_db = sd_db
         self.type_dn = type_dn
         self.cli = cli
-        #self.run_config = kwargs.get('run_config')
 
     @classmethod
     def from_cli(cls, cli):
@@ -70,3 +71,6 @@ class Config(object):
     def parce_cli(self):
         self.parce_type_dn_cli()
         return self
+
+    def get_source_file_db(self):
+        pass
