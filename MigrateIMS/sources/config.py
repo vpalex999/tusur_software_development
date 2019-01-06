@@ -1,26 +1,64 @@
 
 
 class Config(object):
-    def __init__(self, kwargs):
-        self.run_config = None
-        self.type_sip = 'sip' if kwargs.get('--sip') is True else None
-        self.type_pstn = 'pstn' if kwargs.get('--pstn') is True else None
-        self.type_all = 'all' if kwargs.get('--all') is True else None
-        self.source_file_db = None
+    """ Класс хранит конфигурационные данные для работы конвертера """
+
+    all_type_dn = ['sip', 'pstn', 'other']
+
+    def __init__(self, source_db=None, type_dn='sip', cli=None):
+        """
+        Аргументы инициализации класса
+
+        Аргументы
+        ---------
+        source_db=None -- исходная база данных номеров. Может содержать
+           текстовые данные в формате списка или объект. Если не указывается,
+           то присваивается пустой список [].
+
+        type_dn='sip' -- указывается тип обрабатываемых номеров (sip, pstn, other).
+
+        cli=None -- принимаются аргументы  при запуске из командной строки в формате словаря.
+
+        """
+        self.source_db = [] if source_db is None else source_db
+        self.type_dn = type_dn
+        self.cli = cli
+        #self.run_config = kwargs.get('run_config')
+
+    @classmethod
+    def from_cli(cls, cli):
+        """
+        Альтернативный конструктор класса который принимает только словарь аргументов cli
+        """
+        cnfg = cls(cli=cli).parce_cli()
+        return cnfg
 
     def check_type_dn(self):
-        """
-        Проверка ввода типа обрабатываемых номеров (sip, pstn, all).
-        Указан может быть только один тип или ни одного.
-        Конвертер за один проход должен обрабатывать только один тип номеров.
-        """
-        tpl_type_dn = [self.type_sip, self.type_pstn, self.type_all]
-        if tpl_type_dn.count(None) < 2:
-            raise Exception('Only one type of type_dn should be is set: ', tpl_type_dn)
+        """ Проверка хранения допустимого типа в атрибуте type_dn """
+        if self.type_dn not in self.all_type_dn:
+            raise Exception('The type_dn should be in: ', self.all_type_dn)
 
-    @property
-    def type_dn(self):
-        return self.type_sip or self.type_pstn or self.type_all
+    def parce_type_dn_cli(self):
+        """
+        Проверка ввода типа обрабатываемых номеров (sip, pstn, all) из
+        словаря аргументов консольного ввода cli.
+        Конвертер за один проход обрабатывает только один тип номеров.
+        """
+        if self.cli is not None:
+
+            if len(self.cli.keys()) == 0: raise Exception('The cli args is empty')
+
+            list_type = []
+            if self.cli.get('--sip') is True: list_type.append('sip')
+            if self.cli.get('--pstn') is True: list_type.append('pstn')
+            if self.cli.get('--all') is True: list_type.append('other')
+
+            if len(list_type) > 1:
+                raise Exception('Only one type of type_dn should be is set from cli: ', list_type)
+            elif len(list_type) == 0:
+                raise Exception('Not type_dn selected from cli')
+            else:
+                self.type_dn = list_type[0]
 
     def execute(self):
         """
@@ -28,3 +66,7 @@ class Config(object):
         проверка на допустимость и т.д.
         """
         self.check_type_dn()
+
+    def parce_cli(self):
+        self.parce_type_dn_cli()
+        return self
