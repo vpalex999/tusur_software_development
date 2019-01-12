@@ -4,7 +4,7 @@ class Config(object):
     """ Класс хранит конфигурационные данные для работы конвертера """
 
     all_type_dn = ['sip', 'pstn', 'other']
-    nodes = ['mt20']
+    nodes = ['MT20', 'AXE-10']
 
     def __init__(self, node=None, sf_db=None, sd_db=None, type_dn='sip', cli=None):
         """
@@ -40,7 +40,8 @@ class Config(object):
     @classmethod
     def from_cli(cls, cli):
         """
-        Альтернативный конструктор класса который принимает только словарь аргументов cli
+        Альтернативный конструктор класса который принимает словарь
+        специализированных аргументов cli.
         """
         cnfg = cls(cli=cli).parce_cli()
         return cnfg
@@ -54,6 +55,11 @@ class Config(object):
         """ Проверка хранения допустимого типа в атрибуте type_dn """
         if self.type_dn not in self.all_type_dn:
             raise Exception('The type_dn should be in: ', self.all_type_dn)
+
+    def check_source_db(self):
+        """ Проверка наличия исходной БД """
+        if (self.source_file_db is None and self.source_dir_db is None):
+            raise Exception("Source DataBase is not selected")
 
     def parce_type_dn_cli(self):
         """
@@ -91,5 +97,3 @@ class Config(object):
         self.parce_type_dn_cli()
         return self
 
-    def get_source_file_db(self):
-        pass
