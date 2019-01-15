@@ -4,7 +4,8 @@ from sources.shared.domain_model import DomainModel
 
 class DefaultSubscriber(object):
 
-    def __init__(self, dn, category,
+    def __init__(self, dn,
+                 category=None,
                  services=None,
                  service_set='-1',
                  custom_service_set=None,
@@ -29,5 +30,10 @@ class DefaultSubscriber(object):
 
         return def_subs
 
+    def __eq__(self, other):
+        return self.dn == other.dn
+
+    def __repr__(self):
+        return "DN: {}".format(self.dn)
 
 DomainModel.register(DefaultSubscriber)
