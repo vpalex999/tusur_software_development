@@ -11,9 +11,9 @@ def test_Config_node():
 
 def test_check_node_ok():
 
-    config = Config(node='mt20')
+    config = Config(node='MT20')
     config.check_node()
-    assert config.node == 'mt20'
+    assert config.node == 'MT20'
 
 
 def test_check_node_not_in_type():

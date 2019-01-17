@@ -21,7 +21,7 @@ class DefaultSubscriber(object):
     def from_dict(cls, adict):
         def_subs = DefaultSubscriber(
             dn=adict['dn'],
-            category=adict['category'],
+            category=adict.get('category'),
             services=adict.get('services'),
             service_set=adict.get('service_set', '-1'),
             custom_service_set=adict.get('custom_service_set'),
