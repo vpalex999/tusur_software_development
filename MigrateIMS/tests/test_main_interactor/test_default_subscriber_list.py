@@ -23,8 +23,9 @@ def test_defaultsubscriber_list(def_subs_repo, node_subs_repo):
 
     repo = mock.Mock()
     repo.list.return_value = def_subs_repo
+    config = mock.Mock()
 
-    m_interactor = MainInteractor(repo, node_subs_repo)
+    m_interactor = MainInteractor(repo, node_subs_repo, config)
     result = m_interactor.execute()
 
     repo.list.assert_called_once_with()

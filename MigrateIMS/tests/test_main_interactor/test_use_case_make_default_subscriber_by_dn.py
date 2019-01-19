@@ -29,8 +29,8 @@ def repo_node_subs(def_subs_repo):
 
 
 def test_defaultsubscriber_list(repo_def_subs, repo_node_subs):
-
-    m_interactor = MainInteractor(repo_def_subs, repo_node_subs)
+    config = mock.Mock()
+    m_interactor = MainInteractor(repo_def_subs, repo_node_subs, config)
     m_interactor.make_subscribers()
 
     assert repo_def_subs.list()[0] == DSubs('3436873639')

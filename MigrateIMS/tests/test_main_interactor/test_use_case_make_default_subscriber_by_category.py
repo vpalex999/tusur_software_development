@@ -27,14 +27,13 @@ def repo_node_subs(def_subs_repo):
     repo.list.return_value = def_subs_repo
     return repo
 
-
+@pytest.mark.skip('untill to make class Category')
 def test_defaultsubscriber_dn_get_category(repo_def_subs, repo_node_subs):
 
     config = mock.Mock()
     
 
     m_interactor = MainInteractor(repo_def_subs, repo_node_subs, config)
-    m_interactor.make_subscribers()
+    category = m_interactor.get_category(["category1"])
 
-    assert repo_def_subs.list()[0] == DSubs('3436873639')
-    assert len(repo_def_subs.list()) == 3
+    assert category == '56'
