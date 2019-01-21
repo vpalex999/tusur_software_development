@@ -1,27 +1,10 @@
 
 import pytest
 from sources.domain.category import Category
-
-
-@pytest.fixture
-def set_category():
-    return {
-            "Providers": [
-                {"RT": {"AON": "1", "RULE": {"SR4": "56"}}},
-                {"MTC": {"AON": "2", "RULE": {"SR3": "62"}}},
-                {"VIMPEL": {"AON": "3", "RULE": {"SR5": "65"}}},
-                {"EKVANT": {"AON": "4", "RULE": {"SR12": "63"}}},
-                {"TRANST": {"AON": "6", "RULE": {"SR6": "58"}}},
-                {"SINTERRA": {"AON": "7", "RULE": {"SR0": "59"}}},
-                {"ARCTEL": {"AON": "8", "RULE": {"SR11": "64"}}},
-                {"MTT": {"AON": "9", "RULE": {"SR1": "60"}}},
-                {"CHOOSE_CALL": {"AON": "0", "RULE": {"SR7": "61"}}}
-            ],
-            "Default": [{"AON": "1", "id": "56"}]
-            }
         
 
 def test_init_category(set_category):
+    """ Проверка инициализации """
 
     category = Category(set_category)
 
@@ -29,36 +12,111 @@ def test_init_category(set_category):
 
 
 def test_wrong_set_category_is_not_dict():
-
-    with pytest.raises(TypeError): 
+    """ use_case_set_category 2.1 """
+    with pytest.raises(Exception): 
         Category('wrong')
 
 
 def test_wrong_set_category_is_not_key_valid_Providers():
-    
+    """ use_case_set_category 2.2 """
     with pytest.raises(KeyError): 
         Category({"Providers_err": []})
 
-def test_wrong_set_category_is_not_key_valid_Default():
 
+def test_init_wrong_set_category_is_not_key_valid_Default():
+    """ use_case_set_category 2.2 """
     with pytest.raises(KeyError):
         Category({"Providers": [], "Default_err": []})
 
 
-def test_wrong_set_category_is_not_list_Default():
-
+def test_init_wrong_set_category_is_not_list_Default():
+    """ use_case_set_category 2.2 """
     with pytest.raises(Exception):
         Category({"Providers": [], "Default": 77})
 
-def test_wrong_set_category_is_empty_list_Default():
 
+def test_init_wrong_set_category_is_empty_list_Default():
+    """ use_case_set_category 2.2 """
     with pytest.raises(IndexError):
         Category({"Providers": [], "Default": []})
+
+def test_set_category_is_empty_list_Providers():
+    """ use_case_set_category 4.1.1 """ 
+    category = Category({"Providers": [], "Default": [{"AON": "1", "id": "56"}]})
+    
+    assert category([]) == '56'
+
+
+
+
+def test_get_default_category(set_category):
+    """ Проверка функции получения категории по умолчанию """
+    category = Category(set_category)
+
+    assert category.get_default_category() == '56'
+
+
+def test_get_default_category_wrong():
+    """ use_case_set_category 2.3 """
+    category = Category({'Providers': [], 'Default': [{}]})
+    
+    with pytest.raises(KeyError):
+        category.get_default_category()
 
 
 
 def test_get_category_sing_key(set_category):
+    """ use_case_set_category 4 """ 
 
     category = Category(set_category)
 
     assert category(["SR4"]) == '56'
+
+
+def test_get_category_many_sing_key(set_category):
+    """ use_case_set_category 4 """ 
+
+    category = Category(set_category)
+
+    assert category(["tt", "SR4", "ee", "SR7"]) == '61'
+
+
+def test_get_category_many_sing_key_2(set_category):
+    """ use_case_set_category 4 """ 
+
+    category = Category(set_category)
+
+    assert category(["tt", "SR11 SR0", "ee", "SR7"]) == '64'
+
+
+
+def test_get_category_list_options_is_empty(set_category):
+    """ use_case_set_category 3.1.1 """ 
+
+    category = Category(set_category)
+
+    assert category([]) == '56'
+
+
+def test_get_category_list_options_is_None(set_category):
+    """ use_case_set_category 3.2.1 """ 
+
+    category = Category(set_category)
+
+    assert category(None) == '56'
+
+
+def test_get_category_list_options_has_not_category(set_category):
+    """ use_case_set_category 3.3.1 """ 
+
+    category = Category(set_category)
+
+    assert category([""]) == '56'
+
+
+def test_sort_category_rules(set_category):
+    
+    category = Category(set_category)
+
+    res = category.sort_list_rules()
+    assert res[0] == ('SR11 SR0', '64')

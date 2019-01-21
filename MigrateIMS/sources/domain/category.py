@@ -1,27 +1,12 @@
 # -*- coding: utf-8 -*-
-
 """ Модуль обработки категорий АОН по заданным правилам """
+
+import collections
 
 
 class Category(object):
     """
     Класс для вычисления категории АОН.
-
-    Аргументы:
-    - subscriber_set (list) -- принимает список свойств в которых содержатся
-      атрибуты номера, определяющие категорию.
-    - template_set (dict) -- шаблон с правилами перевода категорий.
-    - number_dn (str) -- Необязательный аргумент. Принимает номер в строковом
-      формате для которого осуществяется обработка котегорий.
-
-    Функция self.category - производит поиск id категории по ключу в
-    правилах *template_set* в списке свойств номера *subscriber_set*.
-    Ключ может быть составным, для этого слова в ключе разделяются пробелами:
-    - {"SR4": "56"} -- несоставной ключ.
-    - {"CPC HOTEL": "62"} -- составной ключ.
-    Если ключ -- составной, то поиск будет успешным, если в *subscriber_set*
-    будут присутствовать оба отрибута составного ключа, например:
-    ['tsrd', 'SR4', 'RVT', 'CPC', 'HOTEL']
     """
 
     _ims_category = [
@@ -42,19 +27,74 @@ class Category(object):
         Аргументы:
         - set_category (dict) -- шаблон с правилами перевода категорий.
         """
+        if not isinstance(set_category, collections.Mapping):
+          raise Exception("Class {}: the 'set_category' is not dictionary".format(self.__class__.__name__))
         self.set_category = set_category
         self.list_mapping = set_category['Providers']
         self.default = set_category['Default'][0]
 
+    def get_default_category(self):
+      """ Получить дефолтную категорию """
+      try:
+        return self.default['id']
+      except KeyError as e:
+        raise KeyError("Class {}: The Default category is not defined. {}".format(self.__class__.__name__, e))
+
     def __call__(self, subscriber_options):
         """
+        Функция производит поиск id категории по ключу в
+        правилах *self.set_category* в списке свойств номера *subscriber_options*.
+
         Аргументы:
         ----------
         subscriber_options (list) -- принимает список свойств в которых содержатся
           атрибуты номера, определяющие категорию.
 
+
+        Ключ может быть составным, для этого слова в ключе разделяются пробелами:
+        - {"SR4": "56"} -- несоставной ключ.
+        - {"CPC HOTEL": "62"} -- составной ключ.
+
+        Если ключ -- составной, то поиск будет успешным, если в *subscriber_options*
+        будут присутствовать оба отрибута составного ключа, например:
+        ['tsrd', 'SR4', 'RVT', 'CPC', 'HOTEL'] или ['tsrd', 'SR4', 'RVT', 'CPC HOTEL']
+
         Возврат:
         --------
         str -- номер категории в формате VIMS или категорию, определённую по умолчанию
         """
-        return None
+
+        category = None
+
+        if not len(self.list_mapping):
+          category = self.get_default_category()
+          print("Class {}: The list of Providers is empty, so will get default category id:{}".format(self.__class__.__name__, category))
+        elif subscriber_options is None or len(subscriber_options) == 0:
+          category = self.get_default_category()
+          print("Class {}: The subscriber options is empty, so will get default category id:{}".format(self.__class__.__name__, category))
+        else:
+          for rule in self.sort_list_rules():
+              node_category, ims_category = rule
+              _node_category = set(node_category.split(' '))
+              if _node_category.issubset(set(subscriber_options)):
+                return ims_category
+              elif node_category in subscriber_options:
+                return ims_category
+          else:
+            category = self.get_default_category()
+  
+        return category
+
+    def sort_list_rules(self):
+      """ Сортировка списка правил с весом ключа на убывание
+      
+      На выходе список котежей [(key, value)]
+      Например: [("SR4", "56"), ]
+      """
+      list_rule = []
+      for r in self.list_mapping:
+        for k in r.values():
+          list_rule.append(list(k['RULE'].items())[0])
+
+      return sorted(list_rule, key=lambda x: len(x[0]), reverse=True)
+  
