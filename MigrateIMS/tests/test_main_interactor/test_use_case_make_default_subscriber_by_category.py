@@ -4,6 +4,7 @@ from unittest import mock
 from sources.domain.defaultsubscriber import DefaultSubscriber as DSubs
 from sources.shared.main_interactor import MainInteractor
 from sources.repository.defsubsrepository import DefSubsRepo
+from sources.domain.category import Category
 
 
 @pytest.fixture
@@ -27,13 +28,13 @@ def repo_node_subs(def_subs_repo):
     repo.list.return_value = def_subs_repo
     return repo
 
-@pytest.mark.skip('untill to make class Category')
-def test_defaultsubscriber_dn_get_category(repo_def_subs, repo_node_subs):
+def test_defaultsubscriber_dn_get_category(repo_def_subs, repo_node_subs, set_category):
 
+    category = Category(set_category)
     config = mock.Mock()
-    
+    config.category = category
 
     m_interactor = MainInteractor(repo_def_subs, repo_node_subs, config)
-    category = m_interactor.get_category(["category1"])
+    category = m_interactor.get_category(["SR3"])
 
-    assert category == '56'
+    assert category == '62'
