@@ -17,32 +17,32 @@ def test_wrong_set_category_is_not_dict():
         Category('wrong')
 
 
-def test_wrong_set_category_is_not_key_valid_Providers():
+def test_wrong_set_category_is_not_key_valid_PROVIDERS():
     """ use_case_set_category 2.2 """
     with pytest.raises(KeyError): 
-        Category({"Providers_err": []})
+        Category({"PROVIDERS_err": []})
 
 
 def test_init_wrong_set_category_is_not_key_valid_Default():
     """ use_case_set_category 2.2 """
     with pytest.raises(KeyError):
-        Category({"Providers": [], "Default_err": []})
+        Category({"PROVIDERS": [], "DEFAULT_err": []})
 
 
 def test_init_wrong_set_category_is_not_list_Default():
     """ use_case_set_category 2.2 """
     with pytest.raises(Exception):
-        Category({"Providers": [], "Default": 77})
+        Category({"PROVIDERS": [], "DEFAULT": 77})
 
 
 def test_init_wrong_set_category_is_empty_list_Default():
     """ use_case_set_category 2.2 """
     with pytest.raises(IndexError):
-        Category({"Providers": [], "Default": []})
+        Category({"PROVIDERS": [], "DEFAULT": []})
 
-def test_set_category_is_empty_list_Providers():
+def test_set_category_is_empty_list_PROVIDERS():
     """ use_case_set_category 4.1.1 """ 
-    category = Category({"Providers": [], "Default": [{"AON": "1", "id": "56"}]})
+    category = Category({"PROVIDERS": [], "DEFAULT": [{"AON": "1", "id": "56"}]})
     
     assert category([]) == '56'
 
@@ -58,7 +58,7 @@ def test_get_default_category(set_category):
 
 def test_get_default_category_wrong():
     """ use_case_set_category 2.3 """
-    category = Category({'Providers': [], 'Default': [{}]})
+    category = Category({'PROVIDERS': [], 'DEFAULT': [{}]})
     
     with pytest.raises(KeyError):
         category.get_default_category()

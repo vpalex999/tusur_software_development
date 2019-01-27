@@ -5,7 +5,7 @@ import pytest
 @pytest.fixture
 def set_category():
     return {
-            "Providers": [
+            "PROVIDERS": [
                 {"RT": {"AON": "1", "RULE": {"SR4": "56"}}},
                 {"MTC": {"AON": "2", "RULE": {"SR3": "62"}}},
                 {"VIMPEL": {"AON": "3", "RULE": {"SR5": "65"}}},
@@ -16,7 +16,7 @@ def set_category():
                 {"MTT": {"AON": "9", "RULE": {"SR1": "60"}}},
                 {"CHOOSE_CALL": {"AON": "0", "RULE": {"SR4 SR7": "61"}}}
             ],
-            "Default": [{"AON": "1", "id": "56"}]
+            "DEFAULT": [{"AON": "1", "id": "56"}]
             }
 
 

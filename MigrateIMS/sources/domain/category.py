@@ -58,8 +58,8 @@ class Category(object):
         if not isinstance(set_category, collections.Mapping):
           raise Exception("Class {}: the 'set_category' is not dictionary".format(self.__class__.__name__))
         self.set_category = set_category
-        self.list_mapping = set_category['Providers']
-        self.default = set_category['Default'][0]
+        self.list_mapping = set_category['PROVIDERS']
+        self.default = set_category['DEFAULT'][0]
 
     def get_default_category(self):
       """ Получить дефолтную категорию """
