@@ -14,8 +14,11 @@ class MainInteractor(object):
 
     def get_category(self, list_dn_options):
         """ Вычислить категорию номера по шаблону конвертирования """
-        return self.config.category(list_dn_options)
+        return self.config.category_handler(list_dn_options)
 
+    def get_services(self, list_dn_options):
+        """ Вычислить авторизованные услуги номера по наблону конвертирования """
+        return self.config.services_handler(list_dn_options)
 
     def make_subscribers(self):
         """ Применение правил к созданию Базового номера """

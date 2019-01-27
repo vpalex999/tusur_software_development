@@ -19,3 +19,22 @@ def set_category():
             "Default": [{"AON": "1", "id": "56"}]
             }
 
+
+@pytest.fixture
+def set_service():
+    return {
+        "SI": {
+            "RVT": ["CFU"],
+            "RVA": ["ACS"],
+            "DAI": ["HOLD", "CW"],
+            "DAP": ["HOLD", "ECT"],
+            "DCA": ["HOLD", "3PTY"],
+            "IAM": ["OIP"],
+            "RVA DOUBLE": ["DOUBLE"]
+        },
+        "SUSPEND": [
+            {"name": "Suspension Hard", "key": ["DF1"], "type": "out_inc"},
+            {"name": "Suspension Soft", "key": ["PPR"], "type": "out"},
+            {"name": "Suspension Soft", "key": ["SR8", "DF1"], "type": "out"}
+        ]
+    }

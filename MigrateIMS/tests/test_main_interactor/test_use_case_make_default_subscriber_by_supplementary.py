@@ -4,7 +4,7 @@ from unittest import mock
 from sources.domain.defaultsubscriber import DefaultSubscriber as DSubs
 from sources.shared.main_interactor import MainInteractor
 from sources.repository.defsubsrepository import DefSubsRepo
-from sources.domain.category import Category
+from sources.domain.service import Service
 
 
 @pytest.fixture
@@ -28,13 +28,13 @@ def repo_node_subs(def_subs_repo):
     repo.list.return_value = def_subs_repo
     return repo
 
-def test_defaultsubscriber_dn_get_category(repo_def_subs, repo_node_subs, set_category):
+def test_defaultsubscriber_dn_get_service(repo_def_subs, repo_node_subs, set_service):
 
-    category = Category(set_category)
+    service = Service(set_service)
     config = mock.Mock()
-    config.category_handler = category
+    config.services_handler = service
 
     m_interactor = MainInteractor(repo_def_subs, repo_node_subs, config)
-    category = m_interactor.get_category(["SR3"])
+    list_serv = m_interactor.get_services(["DAI"])
 
-    assert category == '62'
+    assert list_serv == ['HOLD', 'CW']

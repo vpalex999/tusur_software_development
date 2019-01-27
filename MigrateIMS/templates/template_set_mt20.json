@@ -1,0 +1,17 @@
+{
+    "options": ["ND", "TY", "CAT"],
+    "si": {
+        "RVT": ["CFU"],
+        "RVA": ["ACS"],
+        "DAI": ["HOLD", "CW"],
+        "DAP": ["HOLD", "ECT"],
+        "DCA": ["HOLD", "3PTY"],
+        "IAM": ["OIP"]
+    },
+    "all_options": [],
+    "suspend": [
+        {"name": "Suspension Hard", "key": ["DF1"], "type": "out_inc"},
+        {"name": "Suspension Soft", "key": ["PPR"], "type": "out"},
+        {"name": "Suspension Soft", "key": ["SR8", "DF1"], "type": "out"}
+    ]
+}
