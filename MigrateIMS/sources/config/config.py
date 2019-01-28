@@ -11,5 +11,5 @@ class Config(BaseConfig):
     def services_handler(self):
         pass
 
-    def category_handler(self):
-        pass
+    def category_handler(self, list_dn_options):
+        return self.category(list_dn_options)

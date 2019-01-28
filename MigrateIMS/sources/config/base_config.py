@@ -1,6 +1,8 @@
 
 import abc
 from abc import ABCMeta
+from sources.domain.category import Category
+from sources.domain.service import Service
 
 
 class BaseConfig(metaclass=ABCMeta):
@@ -9,7 +11,15 @@ class BaseConfig(metaclass=ABCMeta):
     all_type_dn = ['sip', 'pstn', 'other']
     nodes = ['MT20', 'AXE-10']
 
-    def __init__(self, node=None, sf_db=None, sd_db=None, type_dn='sip', cli=None):
+    def __init__(self, 
+                 node=None,
+                 sf_db=None, 
+                 sd_db=None,
+                 set_category=None,
+                 set_service=None,
+                 type_dn='sip',
+                 cli=None
+                 ):
         """
         Аргументы инициализации класса
 
@@ -38,7 +48,12 @@ class BaseConfig(metaclass=ABCMeta):
         self.source_file_db = sf_db
         self.source_dir_db = sd_db
         self.type_dn = type_dn
+        self.set_category = set_category  # шаблон маппинга категорий
+        self.set_service = set_service  # шаблон маппинга услуг
         self.cli = cli
+
+        self.category = None
+        self.service = None
 
     @classmethod
     def from_cli(cls, cli):
@@ -64,6 +79,14 @@ class BaseConfig(metaclass=ABCMeta):
         if (self.source_file_db is None and self.source_dir_db is None):
             raise Exception("Source DataBase is not selected")
 
+    def make_category(self):
+        """ Создать объект Category для обработки категорий """
+        self.category = Category(self.set_category)
+
+    def make_service(self):
+        """ Создать объект Service для обработки авторизованных услуг """
+        self.service = Service(self.set_service)
+
     def parce_type_dn_cli(self):
         """
         Проверка ввода типа обрабатываемых номеров (sip, pstn, all) из
@@ -72,19 +95,28 @@ class BaseConfig(metaclass=ABCMeta):
         """
         if self.cli is not None:
 
-            if len(self.cli.keys()) == 0: raise Exception('The cli args is empty')
+            if len(self.cli.keys()) == 0:
+                raise Exception('The cli args is empty')
+        self.type_dn = self.get_type_dn_from_cli(self.cli)
 
-            list_type = []
-            if self.cli.get('--sip') is True: list_type.append('sip')
-            if self.cli.get('--pstn') is True: list_type.append('pstn')
-            if self.cli.get('--all') is True: list_type.append('other')
 
-            if len(list_type) > 1:
-                raise Exception('Only one type of type_dn should be is set from cli: ', list_type)
-            elif len(list_type) == 0:
-                raise Exception('Not type_dn selected from cli')
-            else:
-                self.type_dn = list_type[0]
+    def get_type_dn_from_cli(self, dict_cli):
+        """ Вычислить тип конвертируемых номерав из словаря командной строки """
+        list_type = []
+
+        if dict_cli.get('--sip') is True:
+            list_type.append('sip')
+        if dict_cli.get('--pstn') is True:
+            list_type.append('pstn')
+        if dict_cli.get('--all') is True:
+            list_type.append('other')
+
+        if len(list_type) > 1:
+            raise Exception('Only one type of type_dn should be is set from cli: ', list_type)
+        elif len(list_type) == 0:
+            raise Exception('Not type_dn selected from cli')
+        else:
+            return list_type[0]
 
     def execute(self):
         """
@@ -93,6 +125,8 @@ class BaseConfig(metaclass=ABCMeta):
         """
         self.check_node()
         self.check_type_dn()
+        self.make_category()
+        self.make_service()
         return self
 
     def parce_cli(self):
