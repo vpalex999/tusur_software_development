@@ -10,25 +10,25 @@ class Service(object):
 
     Атрибуты
     ---------
-    self.set_rules - хранит шаблон(словарь) с правилами перноса услуг.
+    self.mapping_service - хранит шаблон(словарь) с правилами перноса услуг.
     self.list_mapping  - хранит извлечённый список правил из шаблон(словарь) с правилами перноса услуг.
     """
 
-    def __init__(self, set_rules):
+    def __init__(self, mapping_service):
         """ 
         Аргументы:
-        - set_rules (dict) -- шаблон(словарь) с правилами перноса услуг.
+        - mapping_service (dict) -- шаблон(словарь) с правилами перноса услуг.
         """
-        if not isinstance(set_rules, collections.Mapping):
-          raise Exception("Class {}: the 'set_rules' is not dictionary".format(self.__class__.__name__))
-        self.set_rules = set_rules
-        self.list_mapping = self.set_rules['SI']
+        if not isinstance(mapping_service, collections.Mapping):
+          raise Exception("Class {}: the 'mapping_service' is not dictionary".format(self.__class__.__name__))
+        self.mapping_service = mapping_service
+        self.list_mapping = self.mapping_service['SI']
 
 
     def __call__(self, subscriber_options):
         """
         Функция производит поиск авторизованных услуг из принятого списка свойств
-        номера *subscriber_options* в правилах *self.set_rules*.
+        номера *subscriber_options* в правилах *self.mapping_service*.
 
         Аргументы:
         ----------

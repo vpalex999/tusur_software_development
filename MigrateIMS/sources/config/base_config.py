@@ -13,12 +13,12 @@ class BaseConfig(metaclass=ABCMeta):
 
     def __init__(self, 
                  node=None,
+                 type_dn='sip',
                  sf_db=None, 
                  sd_db=None,
-                 set_category=None,
-                 set_service=None,
-                 type_dn='sip',
-                 cli=None
+                 mapping_category=None,
+                 mapping_service=None,
+                 mapping_ims=None
                  ):
         """
         Аргументы инициализации класса
@@ -39,21 +39,19 @@ class BaseConfig(metaclass=ABCMeta):
         type_dn(str) -- указывается тип обрабатываемых номеров (sip, pstn, other).
            Все разрешённые типы, для которых возможна обработка данных
            находятся в классовом атрибуте 'all_type_dn'.
-
-        cli(dict) -- принимаются аргументы  при запуске из командной строки в формате словаря.
-
         """
-        self.node = node
         self.source_db = None
+        self.node = node
         self.source_file_db = sf_db
         self.source_dir_db = sd_db
         self.type_dn = type_dn
-        self.set_category = set_category  # шаблон маппинга категорий
-        self.set_service = set_service  # шаблон маппинга услуг
-        self.cli = cli
+        self.mapping_category = mapping_category  # шаблон маппинга категорий
+        self.mapping_service = mapping_service  # шаблон маппинга услуг
+        self.mapping_ims = mapping_ims  # шаблон настроек IMS
 
-        self.category = None
-        self.service = None
+        self.category = None    # хранит объект для вычисления категорий
+        self.service = None     # хранит объект для вычисления авторизованных услуг
+        self.ims = None         # хранит объект для конфигурации IMS
 
     @classmethod
     def from_cli(cls, cli):
@@ -61,7 +59,14 @@ class BaseConfig(metaclass=ABCMeta):
         Альтернативный конструктор класса который принимает словарь
         специализированных аргументов cli.
         """
-        cnfg = cls(cli=cli).parce_cli()
+        cnfg = cls(node=cli.get_node(),
+                   sf_db=cli.get_sourse_file_db(),
+                   sd_db=cli.get_source_dir_db(),
+                   type_dn=cli.get_type_dn(),
+                   mapping_category=cli.get_mapping_category(),
+                   mapping_service=cli.get_get_mapping_service(),
+                   mapping_ims=cli.get_mapping_ims()
+                   )
         return cnfg
 
     def check_node(self):
@@ -81,42 +86,11 @@ class BaseConfig(metaclass=ABCMeta):
 
     def make_category(self):
         """ Создать объект Category для обработки категорий """
-        self.category = Category(self.set_category)
+        self.category = Category(self.mapping_category)
 
     def make_service(self):
         """ Создать объект Service для обработки авторизованных услуг """
-        self.service = Service(self.set_service)
-
-    def parce_type_dn_cli(self):
-        """
-        Проверка ввода типа обрабатываемых номеров (sip, pstn, all) из
-        словаря аргументов консольного ввода cli.
-        Конвертер за один проход обрабатывает только один тип номеров.
-        """
-        if self.cli is not None:
-
-            if len(self.cli.keys()) == 0:
-                raise Exception('The cli args is empty')
-        self.type_dn = self.get_type_dn_from_cli(self.cli)
-
-
-    def get_type_dn_from_cli(self, dict_cli):
-        """ Вычислить тип конвертируемых номерав из словаря командной строки """
-        list_type = []
-
-        if dict_cli.get('--sip') is True:
-            list_type.append('sip')
-        if dict_cli.get('--pstn') is True:
-            list_type.append('pstn')
-        if dict_cli.get('--all') is True:
-            list_type.append('other')
-
-        if len(list_type) > 1:
-            raise Exception('Only one type of type_dn should be is set from cli: ', list_type)
-        elif len(list_type) == 0:
-            raise Exception('Not type_dn selected from cli')
-        else:
-            return list_type[0]
+        self.service = Service(self.mapping_service)
 
     def execute(self):
         """

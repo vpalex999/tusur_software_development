@@ -3,10 +3,10 @@ import pytest
 from sources.domain.category import Category
         
 
-def test_init_category(set_category):
+def test_init_category(mapping_category):
     """ Проверка инициализации """
 
-    category = Category(set_category)
+    category = Category(mapping_category)
 
     assert isinstance(category, Category)
 
@@ -49,9 +49,9 @@ def test_set_category_is_empty_list_PROVIDERS():
 
 
 
-def test_get_default_category(set_category):
+def test_get_default_category(mapping_category):
     """ Проверка функции получения категории по умолчанию """
-    category = Category(set_category)
+    category = Category(mapping_category)
 
     assert category.get_default_category() == '56'
 
@@ -65,58 +65,58 @@ def test_get_default_category_wrong():
 
 
 
-def test_get_category_sing_key(set_category):
+def test_get_category_sing_key(mapping_category):
     """ use_case_set_category 4 """ 
 
-    category = Category(set_category)
+    category = Category(mapping_category)
 
     assert category(["SR4"]) == '56'
 
 
-def test_get_category_many_sing_key(set_category):
+def test_get_category_many_sing_key(mapping_category):
     """ use_case_set_category 4 """ 
 
-    category = Category(set_category)
+    category = Category(mapping_category)
 
     assert category(["tt", "SR4", "ee", "SR7"]) == '61'
 
 
-def test_get_category_many_sing_key_2(set_category):
+def test_get_category_many_sing_key_2(mapping_category):
     """ use_case_set_category 4 """ 
 
-    category = Category(set_category)
+    category = Category(mapping_category)
 
     assert category(["tt", "SR11 SR0", "ee", "SR7"]) == '64'
 
 
 
-def test_get_category_list_options_is_empty(set_category):
+def test_get_category_list_options_is_empty(mapping_category):
     """ use_case_set_category 3.1.1 """ 
 
-    category = Category(set_category)
+    category = Category(mapping_category)
 
     assert category([]) == '56'
 
 
-def test_get_category_list_options_is_None(set_category):
+def test_get_category_list_options_is_None(mapping_category):
     """ use_case_set_category 3.2.1 """ 
 
-    category = Category(set_category)
+    category = Category(mapping_category)
 
     assert category(None) == '56'
 
 
-def test_get_category_list_options_has_not_category(set_category):
+def test_get_category_list_options_has_not_category(mapping_category):
     """ use_case_set_category 3.3.1 """ 
 
-    category = Category(set_category)
+    category = Category(mapping_category)
 
     assert category([""]) == '56'
 
 
-def test_sort_category_rules(set_category):
+def test_sort_category_rules(mapping_category):
     
-    category = Category(set_category)
+    category = Category(mapping_category)
 
     res = category.sort_list_rules()
     assert res[0] == ('SR11 SR0', '64')

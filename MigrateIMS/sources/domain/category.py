@@ -50,16 +50,16 @@ class Category(object):
         {'id': '61', 'aon': '0'}
     ]
 
-    def __init__(self, set_category):
+    def __init__(self, mapping_category):
         """ 
         Аргументы:
-        - set_category (dict) -- шаблон с правилами перевода категорий.
+        - mapping_category (dict) -- шаблон с правилами перевода категорий.
         """
-        if not isinstance(set_category, collections.Mapping):
-          raise Exception("Class {}: the 'set_category' is not dictionary".format(self.__class__.__name__))
-        self.set_category = set_category
-        self.list_mapping = set_category['PROVIDERS']
-        self.default = set_category['DEFAULT'][0]
+        if not isinstance(mapping_category, collections.Mapping):
+          raise Exception("Class {}: the 'mapping_category' is not dictionary".format(self.__class__.__name__))
+        self.mapping_category = mapping_category
+        self.list_mapping = mapping_category['PROVIDERS']
+        self.default = mapping_category['DEFAULT'][0]
 
     def get_default_category(self):
       """ Получить дефолтную категорию """
@@ -71,7 +71,7 @@ class Category(object):
     def __call__(self, subscriber_options):
         """
         Функция производит поиск id категории по ключу в
-        правилах *self.set_category* в списке свойств номера *subscriber_options*.
+        правилах *self.mapping_category* в списке свойств номера *subscriber_options*.
 
         Аргументы:
         ----------

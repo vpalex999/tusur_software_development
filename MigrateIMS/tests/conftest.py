@@ -3,7 +3,7 @@ import pytest
 
 
 @pytest.fixture
-def set_category():
+def mapping_category():
     return {
             "PROVIDERS": [
                 {"RT": {"AON": "1", "RULE": {"SR4": "56"}}},
@@ -21,7 +21,7 @@ def set_category():
 
 
 @pytest.fixture
-def set_service():
+def mapping_service():
     return {
         "SI": {
             "RVT": ["CFU"],
@@ -37,4 +37,16 @@ def set_service():
             {"name": "Suspension Soft", "key": ["PPR"], "type": "out"},
             {"name": "Suspension Soft", "key": ["SR8", "DF1"], "type": "out"}
         ]
+    }
+
+
+@pytest.fixture
+def mapping_ims():
+    return {
+        "IMS":{
+            "test ims": "test_ims1"
+        },
+        "SUBSCRIBER":{
+            "PASSWORD": "iskratel"
+        }
     }
