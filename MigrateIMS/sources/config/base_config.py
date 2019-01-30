@@ -3,6 +3,7 @@ import abc
 from abc import ABCMeta
 from sources.domain.category import Category
 from sources.domain.service import Service
+from sources.domain.ims import IMS
 
 
 class BaseConfig(metaclass=ABCMeta):
@@ -91,6 +92,10 @@ class BaseConfig(metaclass=ABCMeta):
     def make_service(self):
         """ Создать объект Service для обработки авторизованных услуг """
         self.service = Service(self.mapping_service)
+    
+    def make_ims(self):
+        """ Создать объект IMS для получения конфигурационных данных IMS """
+        self.ims = IMS(self.mapping_ims)
 
     def execute(self):
         """
@@ -101,11 +106,7 @@ class BaseConfig(metaclass=ABCMeta):
         self.check_type_dn()
         self.make_category()
         self.make_service()
-        return self
-
-    def parce_cli(self):
-        """ Парсинг аргументов из командной строки """
-        self.parce_type_dn_cli()
+        self.make_ims()
         return self
 
     @abc.abstractmethod

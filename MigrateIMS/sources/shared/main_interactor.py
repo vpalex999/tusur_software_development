@@ -20,6 +20,10 @@ class MainInteractor(object):
         """ Вычислить авторизованные услуги номера по наблону конвертирования """
         return self.config.services_handler(list_dn_options)
 
+    def get_license_ims(self):
+        #return getattr(self.config.ims, "license")
+        return "basicLicense"
+
     def make_subscribers(self):
         """ Применение правил к созданию Базового номера """
         for node_dn in self.nodesubsrepo.list():
