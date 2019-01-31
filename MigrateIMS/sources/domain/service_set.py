@@ -93,7 +93,7 @@ class ServiceSet(object):
 
 
 class CustomServiceSet(object):
-    """ Класс формирует кастомный набор услуг абонента"""
+    """ Класс формирует кастомный набор услуг абонента """
 
     _def_custom_set = read_json('templates/template_custom_service_set.json')
 
