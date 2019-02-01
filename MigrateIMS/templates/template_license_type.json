@@ -1,0 +1,5 @@
+{
+    "basicLicense": ["OIP", "OIR", "MCID", "ACS"],
+    "standardLicense": ["CFU", "CFB", "CFNR", "CBSC", "DND", "CFNRC", "ECT", "AR", "OIP", "OIR", "TIP", "TIR", "MCID", "CW", "HOLD", "3PTY", "CONF", "PDCONF", "PEOC", "ACS", "LNR"],
+    "advancedLicense": ["CFU", "CFB", "CFNR", "CBSC", "HOTI", "HOTD", "DND", "CFNRC", "CD", "ECT", "AR", "OIP", "OIR", "TIP", "TIR", "MCID", "CW", "HOLD", "3PTY", "CONF", "PDCONF", "CBSC", "PEOC", "FCR", "ACR", "ACS", "CCBS & CCNR", "LNR"]
+}
