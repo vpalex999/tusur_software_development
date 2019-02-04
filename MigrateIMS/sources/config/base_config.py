@@ -9,12 +9,12 @@ from sources.domain.ims import IMS
 class BaseConfig(metaclass=ABCMeta):
     """ Класс хранит конфигурационные данные для работы конвертера """
 
-    all_type_dn = ['sip', 'pstn', 'other']
+    all_type_dn = ['SIP', 'PSTN', 'OTHER']
     nodes = ['MT20', 'AXE-10']
 
     def __init__(self, 
                  node=None,
-                 type_dn='sip',
+                 type_dn='SIP',
                  sf_db=None, 
                  sd_db=None,
                  mapping_category=None,
@@ -41,11 +41,11 @@ class BaseConfig(metaclass=ABCMeta):
            Все разрешённые типы, для которых возможна обработка данных
            находятся в классовом атрибуте 'all_type_dn'.
         """
-        self.source_db = None
         self.node = node
+        self.type_dn = type_dn
+        self.source_db = None
         self.source_file_db = sf_db
         self.source_dir_db = sd_db
-        self.type_dn = type_dn
         self.mapping_category = mapping_category  # шаблон маппинга категорий
         self.mapping_service = mapping_service  # шаблон маппинга услуг
         self.mapping_ims = mapping_ims  # шаблон настроек IMS

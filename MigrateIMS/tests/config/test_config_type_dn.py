@@ -5,19 +5,19 @@ from sources.config.config import Config
 def test_set_type_sip():
     config = Config()
 
-    assert config.type_dn == 'sip'
+    assert config.type_dn == 'SIP'
 
 
 def test_set_type_pstn():
-    config = Config(type_dn='pstn')
+    config = Config(type_dn='PSTN')
 
-    assert config.type_dn == 'pstn'
+    assert config.type_dn == 'PSTN'
 
 
 def test_set_type_all():
-    config = Config(type_dn='other')
+    config = Config(type_dn='OTHER')
 
-    assert config.type_dn == 'other'
+    assert config.type_dn == 'OTHER'
 
 
 def test_check_type_dn_ok():

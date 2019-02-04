@@ -28,11 +28,11 @@ def repo_node_subs(def_subs_repo):
     repo.list.return_value = def_subs_repo
     return repo
 
-def test_defaultsubscriber_dn_get_category(repo_def_subs, repo_node_subs, set_category):
+def test_defaultsubscriber_dn_get_category(repo_def_subs, repo_node_subs, mapping_category):
 
-    category = Category(set_category)
+    category = Category(mapping_category)
     config = mock.Mock()
-    config.category_handler = category
+    config.category = category
 
     m_interactor = MainInteractor(repo_def_subs, repo_node_subs, config)
     category = m_interactor.get_category(["SR3"])

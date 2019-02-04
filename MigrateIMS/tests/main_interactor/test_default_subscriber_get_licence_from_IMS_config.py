@@ -32,7 +32,7 @@ def test_defaultsubscriber_dn_get_license_ims(repo_def_subs, repo_node_subs, map
 
     ims = IMS(mapping_ims)
     config = mock.Mock()
-    config.handler_ims = ims
+    config.ims = ims
 
     m_interactor = MainInteractor(repo_def_subs, repo_node_subs, config)
     licence = m_interactor.get_license_ims()

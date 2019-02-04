@@ -47,6 +47,7 @@ def mapping_ims():
             "test ims": "test_ims1"
         },
         "SUBSCRIBER":{
-            "PASSWORD": "iskratel"
+            "PASSWORD": "iskratel",
+            "LICENSE": "basicLicense"
         }
     }

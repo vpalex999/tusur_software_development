@@ -28,11 +28,10 @@ def repo_node_subs(def_subs_repo):
     repo.list.return_value = def_subs_repo
     return repo
 
-def test_defaultsubscriber_dn_get_service(repo_def_subs, repo_node_subs, set_service):
+def test_defaultsubscriber_dn_get_service(repo_def_subs, repo_node_subs, mapping_service):
 
-    service = Service(set_service)
     config = mock.Mock()
-    config.services_handler = service
+    config.service = Service(mapping_service)
 
     m_interactor = MainInteractor(repo_def_subs, repo_node_subs, config)
     list_serv = m_interactor.get_services(["DAI"])

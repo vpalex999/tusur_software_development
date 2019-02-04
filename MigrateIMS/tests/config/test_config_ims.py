@@ -11,7 +11,7 @@ def test_set_IMS(mapping_ims):
 
 def test_make_service_obj(mapping_ims):
     config = Config(mapping_ims=mapping_ims)
-    config.make_service()
+    config.make_ims()
 
     assert isinstance(config.ims, IMS)
 
