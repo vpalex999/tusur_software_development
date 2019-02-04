@@ -1,0 +1,67 @@
+{
+    "IMS User Subscription": {
+        "Name *": "",
+        "Capabilities Set": "",
+        "Preferred S-CSCF Set": ""
+    },
+    "IMS Private User Identity": {
+        "Secret Key K *": "iskratel",
+        "Authorization Schemes": "",
+        "Default Auth. Scheme": ""
+    },
+    "IMS Public User Identity": {
+        "Type": "",
+        "Barring": "",
+        "Service Profile": "",
+        "Charging Info": "",
+        "Wildcard PSI": "",
+        "Display Name": "",
+        "PSI Activation": "",
+        "Can Register": "no",
+        "Allowed Roaming": "1"
+    },
+    "Access Gateway Control Function": {
+        "Type *": "",
+        "Node *": "",
+        "URI Type *": "",
+        "Interface *": "",
+        "Access *": "",
+        "Access Variant *": "",
+        "RTP Profile *": "",
+        "Password *": "",
+        "Private Id Alias": "",
+        "Embed telURI into SIP URI": "",
+        "DTMF Authorization": "",
+        "Out of Service Indication": "",
+        "Active Subscriber": "",
+        "Initiate registration at system startup": "",
+        "Display/Ring Type": "",
+        "In-band Indication Type": "",
+        "Tariff Origin Code": "",
+        "Standalone Mode Calls": "",
+        "Hotline Enable": ""
+    },
+    "IMS Public Identities from implicit registration set": {
+        "URI Type": "",
+        "Hotline Enable": "",
+        "Set as MSN Number": ""
+    },
+    "Telephony Application Server": {
+        "TAS Node": "",
+        "Supplementary Service Set": "",
+        "Concurrent Sessions": "",
+        "License Type*": "",
+        "Subscriber Category": "",
+        "m.SipProfile.class": "1",
+        "Business Group": "",
+        "Custom Service Set": ""
+    },
+    "Additional parameters needed  for migration": {
+        "NGN Interface *": "",
+        "NGN Access *": "",
+        "NGN Access Variant *": "",
+        "NGN RTP Profile *": "",
+        "Time Zone": "",
+        "Geographical Area": ""
+    }
+}
