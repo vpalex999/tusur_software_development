@@ -1,5 +1,6 @@
 
 import pytest
+import json
 
 
 @pytest.fixture
@@ -51,3 +52,8 @@ def mapping_ims():
             "LICENSE": "basicLicense"
         }
     }
+
+
+@pytest.fixture
+def def_subs_wp():
+    return json.load(open('templates/template_web_portal.json'))
