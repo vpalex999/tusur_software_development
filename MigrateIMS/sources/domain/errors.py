@@ -1,0 +1,4 @@
+
+
+class MigrateError(Exception):
+    pass

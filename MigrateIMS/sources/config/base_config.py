@@ -9,13 +9,19 @@ from sources.domain.ims import IMS
 class BaseConfig(metaclass=ABCMeta):
     """ Класс хранит конфигурационные данные для работы конвертера """
 
-    all_type_dn = ['SIP', 'PSTN', 'OTHER']
+    PSTN = 'PSTN'
+    ISDN = 'ISDN'
+    SIP = 'SIP'
+    OTHER = 'OTHER'
+
+    all_type_dn = [SIP, PSTN, ISDN, OTHER]
+
     nodes = ['MT20', 'AXE-10']
 
-    def __init__(self, 
+    def __init__(self,
                  node=None,
                  type_dn='SIP',
-                 sf_db=None, 
+                 sf_db=None,
                  sd_db=None,
                  mapping_category=None,
                  mapping_service=None,

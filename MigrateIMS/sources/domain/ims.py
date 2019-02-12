@@ -2,15 +2,16 @@
 """ Модуль обработки конфигурации IMS """
 
 import collections
+from sources.domain.base_repr import BaseRepr
 
 
-class IMS(object):
+class IMS(BaseRepr):
     """
     Класс хранит шаблон конфигурации IMS.
     """
 
     def __init__(self, mapping_ims):
-        """ 
+        """
         Аргументы:
         - mapping_ims (dict) -- шаблон(словарь) конфигурации IMS.
         """
@@ -21,6 +22,3 @@ class IMS(object):
 
     def __getattribute__(self, attr):
         return object.__getattribute__(self, attr)
-
-    
-  
