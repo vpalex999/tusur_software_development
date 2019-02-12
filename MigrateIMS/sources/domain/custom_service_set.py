@@ -1,8 +1,9 @@
 
 import json
+from sources.domain.base_repr import BaseRepr
 
 
-class CustomServiceSet(object):
+class CustomServiceSet(BaseRepr):
     """ Класс формирует кастомный набор услуг абонента """
 
     _auth_dvo = {

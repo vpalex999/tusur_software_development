@@ -3,7 +3,7 @@ from unittest import mock
 
 from sources.domain.defaultsubscriber import DefaultSubscriber as DSubs
 from sources.shared.main_interactor import MainInteractor
-from sources.repository.defsubsrepository import DefSubsRepo
+from sources.repository.imsrepository import ImsSubsRepo
 from sources.domain.service import Service
 
 
@@ -18,7 +18,7 @@ def def_subs_repo():
 
 @pytest.fixture
 def repo_def_subs():
-    repo = DefSubsRepo()
+    repo = ImsSubsRepo()
     return repo
 
 

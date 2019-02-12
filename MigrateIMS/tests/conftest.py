@@ -44,13 +44,14 @@ def mapping_service():
 @pytest.fixture
 def mapping_ims():
     return {
-        "IMS": {
-            "test ims": "test_ims1"
-        },
         "SUBSCRIBER": {
             "NDC": "7343",
-            "PASSWORD": "iskratel",
-            "LICENSE": "basicLicense",
+            "IMS domain": "dis.rd.mak",
+            "NEW_TYPE_DN": "",
+            "CW_Activate": "yes",
+            "DelayTimeCFx": "12",
+        },
+        "IMS": {
             "Capabilities Set": "1",
             "Preferred S-CSCF Set": "2",
             "Authorization Schemes": "255",

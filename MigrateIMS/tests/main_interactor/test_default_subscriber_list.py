@@ -3,6 +3,7 @@ from unittest import mock
 
 from sources.domain.defaultsubscriber import DefaultSubscriber as DSubs
 from sources.shared.main_interactor import MainInteractor
+from sources.repository.imsrepository import ImsSubsRepo
 
 
 @pytest.fixture
@@ -11,12 +12,12 @@ def def_subs_repo():
     def_subs2 = DSubs('3436873640')
     def_subs3 = DSubs('3436873641')
 
-    return [def_subs1, def_subs2, def_subs3]
+    return ImsSubsRepo([def_subs1, def_subs2, def_subs3])
 
 
 @pytest.fixture
 def node_subs_repo():
-    return []
+    return ImsSubsRepo()
 
 
 def test_defaultsubscriber_list(def_subs_repo, node_subs_repo):

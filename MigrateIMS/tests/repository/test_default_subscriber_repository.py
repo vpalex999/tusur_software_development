@@ -1,7 +1,7 @@
 import pytest
 
 from sources.domain.defaultsubscriber import DefaultSubscriber as DSubs
-from sources.repository.defsubsrepository import DefSubsRepo
+from sources.repository.imsrepository import ImsSubsRepo
 
 
 @pytest.fixture
@@ -15,14 +15,14 @@ def domain_defsubscribers():
 
 def test_repository_list_without_parameters(domain_defsubscribers):
 
-    repo = DefSubsRepo(domain_defsubscribers)
+    repo = ImsSubsRepo(domain_defsubscribers)
 
     assert len(domain_defsubscribers) == len(repo.list())
 
 
 def test_add_subscriber_to_repository():
 
-    repo = DefSubsRepo()
+    repo = ImsSubsRepo()
 
     assert repo.add(DSubs('1234567')) is True
     assert len(repo.list()) == 1
@@ -31,7 +31,7 @@ def test_add_subscriber_to_repository():
 
 def test_add_duplicate_subscriber_to_repository():
 
-    repo = DefSubsRepo()
+    repo = ImsSubsRepo()
     repo.add(DSubs('1234567'))
 
     assert repo.add(DSubs('1234567')) is False
@@ -41,14 +41,14 @@ def test_add_duplicate_subscriber_to_repository():
 
 def test_get_count_repository():
 
-    repo = DefSubsRepo()
+    repo = ImsSubsRepo()
 
     assert len(repo) == 0
 
 
 def test_get_count_repository_with_item():
 
-    repo = DefSubsRepo()
+    repo = ImsSubsRepo()
     repo.add(DSubs('1234567'))
 
     assert len(repo) == 1
@@ -56,7 +56,7 @@ def test_get_count_repository_with_item():
 
 def test_get_subscriber_by_filters_dn():
 
-    repo = DefSubsRepo()
+    repo = ImsSubsRepo()
     repo.add(DSubs('1234567'))
 
     assert repo.list(filters={'dn': '1234567'}) == [DSubs('1234567')]
@@ -64,7 +64,7 @@ def test_get_subscriber_by_filters_dn():
 
 def test_get_subscriber_by_filters_dn_wrong():
 
-    repo = DefSubsRepo()
+    repo = ImsSubsRepo()
     repo.add(DSubs('1234567'))
 
     assert repo.list(filters={'dn': '1234568'}) == []

@@ -1,4 +1,3 @@
-import pytest
 from sources.config.config import Config
 from sources.domain.ims import IMS
 

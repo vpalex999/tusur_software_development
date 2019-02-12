@@ -13,7 +13,7 @@ def test_get_attr_from_IMS(mapping_ims):
 
     ims = IMS(mapping_ims)
 
-    assert getattr(ims, 'test ims') == 'test_ims1'
+    assert getattr(ims, 'Capabilities Set') == '1'
 
 
 def test_get_attr_from_IMS_other_key(mapping_ims):

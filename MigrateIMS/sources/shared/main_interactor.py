@@ -1,3 +1,4 @@
+
 from sources.domain.defaultsubscriber import DefaultSubscriber as DSubs
 from sources.domain.custom_service_set import CustomServiceSet
 
@@ -13,6 +14,16 @@ class MainInteractor(object):
         """ Возвратить список всех номеров из репозитория """
         return self.defsubsrepo.list()
 
+    def get_password(self, dn_password):
+        try:
+            if len(dn_password) > 0:
+                return dn_password
+            else:
+                raise TypeError
+        except TypeError as e:
+            print(f"DN has no password, so it will be taken from config IMS.")
+            return getattr(self.config.ims, "Secret Key K *")
+
     def get_category(self, list_dn_options):
         """ Вычислить категорию АОН номера по шаблону конвертирования """
         return self.config.category(list_dn_options)
@@ -23,11 +34,11 @@ class MainInteractor(object):
 
     def get_service_set(self, list_dn_options):
         """ Вычислить номер шаблона услуг на стороне VIMS по списку авторизованных услуг """
-        return -1 # залгушка, требует доработки
+        return -1  # залгушка, требует доработки
 
     def get_license_ims(self):
         """ Получить тип илензии из глобального конфига VIMS """
-        return getattr(self.config.ims, "LICENSE")
+        return getattr(self.config.ims, "License Type*")
     
     def get_license(self):
         """ Вычисляет конечный тип лицензии на услуги для номера """
@@ -43,6 +54,8 @@ class MainInteractor(object):
             def_subs_dn = dict()
             print("##### Start of subscriber configuration {} #####".format(node_dn.dn))
             def_subs_dn['dn'] = node_dn.dn
+            def_subs_dn['type_dn'] = node_dn.type_dn
+            def_subs_dn['password'] = self.get_password(node_dn.password)
             def_subs_dn['license'] = self.get_license()
             def_subs_dn['category'] = self.get_category(node_dn.list_dn_options)
             def_subs_dn['services'] = self.get_services(node_dn.list_dn_options)
@@ -55,4 +68,5 @@ class MainInteractor(object):
             self.defsubsrepo.add(DSubs.from_dict(def_subs_dn))
 
     def execute(self):
+        self.make_subscribers()
         return self.list_subscribers()
