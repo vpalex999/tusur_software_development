@@ -1,4 +1,4 @@
-
+import os
 import abc
 from abc import ABCMeta
 from sources.domain.category import Category
@@ -25,7 +25,8 @@ class BaseConfig(metaclass=ABCMeta):
                  sd_db=None,
                  mapping_category=None,
                  mapping_service=None,
-                 mapping_ims=None
+                 mapping_ims=None,
+                 dest_dir=os.path.curdir
                  ):
         """
         Аргументы инициализации класса
@@ -55,6 +56,7 @@ class BaseConfig(metaclass=ABCMeta):
         self.mapping_category = mapping_category  # шаблон маппинга категорий
         self.mapping_service = mapping_service  # шаблон маппинга услуг
         self.mapping_ims = mapping_ims  # шаблон настроек IMS
+        self.dest_dir = os.path.normpath(dest_dir)
 
         self.category = None    # хранит объект для вычисления категорий
         self.service = None     # хранит объект для вычисления авторизованных услуг

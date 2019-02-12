@@ -4,6 +4,7 @@ from unittest import mock
 from sources.domain.defaultsubscriber import DefaultSubscriber as DS
 from sources.domain.ims import IMS
 from sources.domain.wp import WpDN
+from sources.domain.custom_service_set import CustomServiceSet
 
 
 @pytest.fixture
@@ -17,7 +18,8 @@ def config(mapping_ims):
 def wp(config):
     subs = DS(dn='6873639',
               password='iskratel',
-              category='56')
+              category='56',
+              custom_service_set=CustomServiceSet())
     return WpDN(subs, config)
 
 

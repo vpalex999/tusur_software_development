@@ -55,7 +55,7 @@ def test_set_tas_node_is_Wrong(wp, tas):
 @pytest.mark.parametrize('supl_set', ['901', '-1'])
 def test_set_supl_serv_set(wp, supl_set):
 
-    setattr(wp.ims, 'Supplementary Service Set', supl_set)
+    wp.number.service_set = supl_set
 
     wp.set_supl_serv_set()
 
@@ -65,7 +65,7 @@ def test_set_supl_serv_set(wp, supl_set):
 @pytest.mark.parametrize('supl_set', [None, 123, 'ABC'])
 def test_set_supl_serv_set_is_Wrong(wp, supl_set):
 
-    setattr(wp.ims, 'Supplementary Service Set', supl_set)
+    wp.number.service_set = supl_set
 
     with pytest.raises(MigrateError):
         wp.set_supl_serv_set()

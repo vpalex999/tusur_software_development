@@ -1136,7 +1136,7 @@ class WpDN(object):
         * Если такого поля нет, то по дефолту выставляем: "902".
         * Oбязательный параметр.
         """
-        _suppl_set = getattr(self.ims, 'Supplementary Service Set')
+        _suppl_set = self.service_set
 
         if _suppl_set not in ["-1"]:
             if _suppl_set is None:

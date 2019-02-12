@@ -6,7 +6,9 @@ from sources.repository.mockrepository import MockRepo
 
 @pytest.fixture
 def config():
-    return mock.Mock()
+    config = mock.Mock()
+    config.source_file_db = 'data/node_test/data/ATC_MAKET.xlsx'
+    return config
 
 
 @pytest.fixture

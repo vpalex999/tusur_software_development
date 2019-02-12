@@ -34,7 +34,7 @@ class MainInteractor(object):
 
     def get_service_set(self, list_dn_options):
         """ Вычислить номер шаблона услуг на стороне VIMS по списку авторизованных услуг """
-        return -1  # залгушка, требует доработки
+        return '-1'  # залгушка, требует доработки
 
     def get_license_ims(self):
         """ Получить тип илензии из глобального конфига VIMS """
@@ -62,8 +62,8 @@ class MainInteractor(object):
             def_subs_dn['service_set'] = self.get_service_set(node_dn.list_dn_options)
             def_subs_dn['custom_service_set'] = self.get_custom_service_set(def_subs_dn['services'],
                                                                             category=def_subs_dn['category'])
-            
-            print("##### Stop of subscriber configuration {} #####".format(node_dn.dn))
+
+            #print("##### Stop of subscriber configuration {} #####".format(node_dn.dn))
 
             self.defsubsrepo.add(DSubs.from_dict(def_subs_dn))
 
