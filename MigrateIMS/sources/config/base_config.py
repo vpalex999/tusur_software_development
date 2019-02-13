@@ -4,6 +4,7 @@ from abc import ABCMeta
 from sources.domain.category import Category
 from sources.domain.service import Service
 from sources.domain.ims import IMS
+from sources.domain.errors import MigrateError
 
 
 class BaseConfig(metaclass=ABCMeta):
@@ -81,17 +82,18 @@ class BaseConfig(metaclass=ABCMeta):
     def check_node(self):
         """ Проверка названия обрабатываемого типа АТС из списка разрешённых типов """
         if self.node not in self.nodes:
-            raise Exception("Unknown type of node '{}', Please select from this list'{}'".format(self.node, self.nodes))
+            msg = "Unknown type of node: '{}', Please select from this list'{}'".format(self.node, self.nodes)
+            raise MigrateError(msg)
 
     def check_type_dn(self):
         """ Проверка хранения допустимого типа в атрибуте type_dn """
         if self.type_dn not in self.all_type_dn:
-            raise Exception('The type_dn should be in: ', self.all_type_dn)
+            raise MigrateError(f"The type_dn should be in: {self.all_type_dn}")
 
     def check_source_db(self):
         """ Проверка наличия исходной БД """
         if (self.source_file_db is None and self.source_dir_db is None):
-            raise Exception("Source DataBase is not selected")
+            raise MigrateError("Source DataBase is not selected")
 
     def make_category(self):
         """ Создать объект Category для обработки категорий """

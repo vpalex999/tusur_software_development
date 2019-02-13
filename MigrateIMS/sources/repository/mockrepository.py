@@ -47,9 +47,9 @@ class MockRepo(NodeRepo):
         return list(map(self.zip_number, _numbers_gen))
 
     def execute(self):
-        
+
         if self.check_book:
-    
+
             dn = dict()
 
             for row in self.get_numbers():

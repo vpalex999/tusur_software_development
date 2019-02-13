@@ -1,4 +1,5 @@
 
+import logging
 from sources.domain.defaultsubscriber import DefaultSubscriber as DSubs
 from sources.domain.custom_service_set import CustomServiceSet
 
@@ -20,8 +21,8 @@ class MainInteractor(object):
                 return dn_password
             else:
                 raise TypeError
-        except TypeError as e:
-            print(f"DN has no password, so it will be taken from config IMS.")
+        except TypeError:
+            logging.warning(f"DN has no password, so it will be taken from config IMS.")
             return getattr(self.config.ims, "Secret Key K *")
 
     def get_category(self, list_dn_options):
@@ -52,7 +53,7 @@ class MainInteractor(object):
         """ Применение правил к созданию Базового номера """
         for node_dn in self.nodesubsrepo.list():
             def_subs_dn = dict()
-            print("##### Start of subscriber configuration {} #####".format(node_dn.dn))
+            logging.info("----- Start configuration of subscriber {} -----".format(node_dn.dn))
             def_subs_dn['dn'] = node_dn.dn
             def_subs_dn['type_dn'] = node_dn.type_dn
             def_subs_dn['password'] = self.get_password(node_dn.password)
@@ -62,8 +63,6 @@ class MainInteractor(object):
             def_subs_dn['service_set'] = self.get_service_set(node_dn.list_dn_options)
             def_subs_dn['custom_service_set'] = self.get_custom_service_set(def_subs_dn['services'],
                                                                             category=def_subs_dn['category'])
-
-            #print("##### Stop of subscriber configuration {} #####".format(node_dn.dn))
 
             self.defsubsrepo.add(DSubs.from_dict(def_subs_dn))
 

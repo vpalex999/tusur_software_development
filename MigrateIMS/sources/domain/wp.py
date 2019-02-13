@@ -1,7 +1,7 @@
 import json
 import copy
 import logging
-from sources.domain.errors import *
+from sources.domain.errors import MigrateError
 from utilites.base_64 import B64
 
 

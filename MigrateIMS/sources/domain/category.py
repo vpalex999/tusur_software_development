@@ -30,6 +30,8 @@ cat = category(list_of_attribute).
 """
 
 import collections
+import logging
+from sources.domain.errors import MigrateError
 
 
 class Category(object):
@@ -56,7 +58,9 @@ class Category(object):
         - mapping_category (dict) -- шаблон с правилами перевода категорий.
         """
         if not isinstance(mapping_category, collections.Mapping):
-            raise Exception("Class {}: the 'mapping_category' is not dictionary".format(self.__class__.__name__))
+            msg = "Class {}: the 'mapping_category' is not dictionary".format(self.__class__.__name__)
+            raise MigrateError(msg)
+
         self.mapping_category = mapping_category
         self.list_mapping = mapping_category['PROVIDERS']
         self.default = mapping_category['DEFAULT'][0]
@@ -66,7 +70,8 @@ class Category(object):
         try:
             return self.default['id']
         except KeyError as e:
-            raise KeyError("Class {}: The Default category is not defined. {}".format(self.__class__.__name__, e))
+            msg = "Class {}: The Default category is not defined. {}".format(self.__class__.__name__, e)
+            raise MigrateError(msg)
 
     def __call__(self, subscriber_options):
         """
@@ -96,10 +101,10 @@ class Category(object):
 
         if not len(self.list_mapping):
             category = self.get_default_category()
-            print("Class {}: The list of Providers is empty, so will get default category id:{}".format(self.__class__.__name__, category))
+            logging.warning("Class {}: The list of Providers is empty, so will get default category id:{}".format(self.__class__.__name__, category))
         elif subscriber_options is None or len(subscriber_options) == 0:
             category = self.get_default_category()
-            print("Class {}: The subscriber options is empty, so will get default category id:{}".format(self.__class__.__name__, category))
+            logging.warning("Class {}: The subscriber options is empty, so will get default category id:{}".format(self.__class__.__name__, category))
         else:
             for rule in self.sort_list_rules():
                 node_category, ims_category = rule

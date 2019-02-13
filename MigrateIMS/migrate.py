@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import json
 import os
+import json
+import logging
+from sources.logging.log_configure import setup_logging
+
 from sources.config.config import Config
 from sources.shared.main_interactor import MainInteractor
 from sources.repository.imsrepository import ImsSubsRepo
@@ -9,6 +12,10 @@ from sources.repository.mockrepository import MockRepo
 from sources.domain.wp import WpDN
 from sources.domain.view_wp import ViewWP
 
+
+setup_logging()
+
+logging.info("****************** Start MigrateIMS **************************\n")
 
 category_j = json.load(open('data/node_test/config/category_set_fake_atc.json'))
 service_j = json.load(open('data/node_test/config/service_set_fake_atc.json'))

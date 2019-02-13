@@ -53,6 +53,6 @@ class CustomServiceSet(BaseRepr):
                     setattr(self, self._auth_dvo[serv], "1")
 
         return self
-    
+
     def __call__(self):
-        return {key:self.__dict__[key] for key in self.__dict__}
+        return {key: self.__dict__[key] for key in self.__dict__}

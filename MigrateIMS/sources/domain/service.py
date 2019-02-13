@@ -2,6 +2,8 @@
 """ Модуль обработки Авторизованных услуг по заданным правилам """
 
 import collections
+import logging
+from sources.domain.errors import MigrateError
 
 
 class Service(object):
@@ -20,7 +22,9 @@ class Service(object):
         - mapping_service (dict) -- шаблон(словарь) с правилами перноса услуг.
         """
         if not isinstance(mapping_service, collections.Mapping):
-            raise Exception("Class {}: the 'mapping_service' is not dictionary".format(self.__class__.__name__))
+            msg = "Class {}: the 'mapping_service' is not dictionary".format(self.__class__.__name__)
+            raise MigrateError(msg)
+    
         self.mapping_service = mapping_service
         self.list_mapping = self.mapping_service['SI']
 
@@ -51,9 +55,9 @@ class Service(object):
         service = []
 
         if not len(self.list_mapping):
-            print("Class {}: The list of SI is empty, so will get empty service list".format(self.__class__.__name__))
+            logging.warning("Class {}: The list of SI is empty, so will get empty service list".format(self.__class__.__name__))
         elif subscriber_options is None or len(subscriber_options) == 0:
-            print("Class {}: The subscriber options is empty, so will get empty service list".format(self.__class__.__name__))
+            logging.warning("Class {}: The subscriber options is empty, so will get empty service list".format(self.__class__.__name__))
         else:
             for rule in self.sort_list_rules():
                 node_service, ims_service = rule
@@ -63,7 +67,7 @@ class Service(object):
                 elif node_service in subscriber_options:
                     service.extend(ims_service)
         if not service:
-            print("Class: {} In The subscriber options has not options for mapping rules: {}".format(self.__class__.__name__, subscriber_options))
+            logging.warning("Class: {} In The subscriber options has not options for mapping rules: {}".format(self.__class__.__name__, subscriber_options))
 
         return service
 
