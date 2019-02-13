@@ -46,7 +46,7 @@
         "TAS Node": "7777",
         "Supplementary Service Set": "901",
         "Concurrent Sessions": "1",
-        "License Type*": "basicLicense",
+        "License Type*": "standardLicense",
         "Subscriber Category": "",
         "m.SipProfile.class": "92",
         "Business Group": "5",

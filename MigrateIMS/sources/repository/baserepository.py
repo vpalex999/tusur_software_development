@@ -29,7 +29,7 @@ class BaseRepo(object):
             result.extend(self._subscribers)
 
             for key, value in filters.items():
-                logging.info('{}: filters values: {}:{}'.format(self.__class__.__name__, key, value))
+                logging.debug('{}: filters values: {}:{}'.format(self.__class__.__name__, key, value))
                 result = [e for e in result if self._check(e, key, value)]
 
         return [s for s in result]

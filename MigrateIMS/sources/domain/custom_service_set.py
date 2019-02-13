@@ -1,6 +1,8 @@
 
 import json
 from sources.domain.base_repr import BaseRepr
+from sources.domain.license_type import LicenseType
+from sources.domain.errors import MigrateError
 
 
 class CustomServiceSet(BaseRepr):
@@ -40,12 +42,25 @@ class CustomServiceSet(BaseRepr):
 
     def __init__(self):
         self.__dict__.update(CustomServiceSet.def_custom_set)
+        self._lic_type = LicenseType()
 
-    def make(self, list_services, category=None):
+    def __getattr__(self, val):
+        return getattr(self._lic_type, val)
+
+    def make(self, list_services, category=None, license_type=None):
         """ Принимает список авторизованных услуг и выставляет соответствующим атрибутам значение 1 """
-        
+        self.__dict__.update(CustomServiceSet.def_custom_set)
+
         if category:
             self.subsctg = category
+
+        if license_type is None:
+            self.licenseType = self.get_id_lic_by_set(list_services)
+        elif self.is_cover_lic(license_type, list_services):
+                self.licenseType = self.get_id_by_name(license_type)
+        else:
+            raise MigrateError(f"The got licenseType '{license_type}' is not "
+                               f"cover subscriber services: {list_services}")
 
         if list_services:
             for serv in list_services:
@@ -55,4 +70,4 @@ class CustomServiceSet(BaseRepr):
         return self
 
     def __call__(self):
-        return {key: self.__dict__[key] for key in self.__dict__}
+        return {key: self.__dict__[key] for key in self.__dict__ if not key.startswith('_')}

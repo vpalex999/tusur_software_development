@@ -24,7 +24,7 @@ _config = {
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
-            "level": "DEBUG",
+            "level": "INFO",
             "formatter": "console_formatter",
             "stream": "ext://sys.stdout"
         },

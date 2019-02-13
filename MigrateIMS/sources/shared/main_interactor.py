@@ -62,7 +62,8 @@ class MainInteractor(object):
             def_subs_dn['services'] = self.get_services(node_dn.list_dn_options)
             def_subs_dn['service_set'] = self.get_service_set(node_dn.list_dn_options)
             def_subs_dn['custom_service_set'] = self.get_custom_service_set(def_subs_dn['services'],
-                                                                            category=def_subs_dn['category'])
+                                                                            category=def_subs_dn['category'],
+                                                                            license_type=def_subs_dn['license'])
 
             self.defsubsrepo.add(DSubs.from_dict(def_subs_dn))
 
