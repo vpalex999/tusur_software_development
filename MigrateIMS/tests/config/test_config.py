@@ -17,5 +17,3 @@ def test_init_object_Config():
     assert config.category is None
     assert config.service is None
     assert config.ims is None
-
-

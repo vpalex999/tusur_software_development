@@ -21,7 +21,3 @@ def test_get_attr_from_IMS_other_key(mapping_ims):
     ims = IMS(mapping_ims)
     with pytest.raises(AttributeError):
         getattr(ims, 'test ims1')
-
-
-
-

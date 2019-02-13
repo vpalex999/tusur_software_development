@@ -1,4 +1,3 @@
-import pytest
 from sources.config.config import Config
 from sources.domain.service import Service
 
@@ -14,5 +13,3 @@ def test_make_service_obj(mapping_service):
     config.make_service()
 
     assert isinstance(config.service, Service)
-
-

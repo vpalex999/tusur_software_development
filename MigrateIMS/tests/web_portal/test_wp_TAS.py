@@ -178,4 +178,3 @@ def test_set_custom_servise_set_empty(wp):
     wp.set_custom_servise_set()
 
     assert wp.subscriber_dict['Telephony Application Server']['Custom Service Set'] == ""
-

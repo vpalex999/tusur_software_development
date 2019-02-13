@@ -33,7 +33,7 @@ def repo_node_subs(def_subs_repo):
 
 
 def test_defaultsubscriber_list(repo_def_subs, repo_node_subs, mapping_ims, mapping_category, mapping_service):
-    
+
     config = Config(node="AXE-10", type_dn="OTHER")
     config.ims = IMS(mapping_ims)
     config.category = Category(mapping_category)

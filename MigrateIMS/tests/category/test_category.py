@@ -14,13 +14,13 @@ def test_init_category(mapping_category):
 
 def test_wrong_set_category_is_not_dict():
     """ use_case_set_category 2.1 """
-    with pytest.raises(Exception): 
+    with pytest.raises(Exception):
         Category('wrong')
 
 
 def test_wrong_set_category_is_not_key_valid_PROVIDERS():
     """ use_case_set_category 2.2 """
-    with pytest.raises(KeyError): 
+    with pytest.raises(KeyError):
         Category({"PROVIDERS_err": []})
 
 
@@ -43,7 +43,7 @@ def test_init_wrong_set_category_is_empty_list_Default():
 
 
 def test_set_category_is_empty_list_PROVIDERS():
-    """ use_case_set_category 4.1.1 """ 
+    """ use_case_set_category 4.1.1 """
     category = Category({"PROVIDERS": [], "DEFAULT": [{"AON": "1", "id": "56"}]})
 
     assert category([]) == '56'

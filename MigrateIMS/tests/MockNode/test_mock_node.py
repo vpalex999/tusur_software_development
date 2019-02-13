@@ -28,4 +28,3 @@ def test_parce_node_repo(node):
     node.execute()
 
     assert node.list()[0].dn == '6873639'
-

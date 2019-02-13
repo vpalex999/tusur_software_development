@@ -2,10 +2,7 @@ import pytest
 from unittest import mock
 
 from sources.config.config import Config
-from sources.domain.category import Category
-from sources.domain.service import Service
 from sources.domain.ims import IMS
-from sources.domain.defaultsubscriber import DefaultSubscriber as DSubs
 from sources.shared.main_interactor import MainInteractor
 from sources.repository.imsrepository import ImsSubsRepo
 

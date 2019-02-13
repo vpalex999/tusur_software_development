@@ -28,6 +28,7 @@ def repo_node_subs(def_subs_repo):
     repo.list.return_value = def_subs_repo
     return repo
 
+
 def test_defaultsubscriber_dn_get_service(repo_def_subs, repo_node_subs, mapping_service):
 
     config = mock.Mock()

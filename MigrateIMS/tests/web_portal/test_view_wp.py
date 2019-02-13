@@ -1,6 +1,7 @@
 
 from sources.domain.view_wp import ViewWP
 
+
 def test_init_view_wp():
 
     view_wp = ViewWP([])
@@ -45,4 +46,3 @@ def test_view_wp_call_empty_list():
     view_wp = ViewWP([])
 
     assert view_wp() == []
-    

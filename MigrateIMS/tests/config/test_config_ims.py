@@ -13,5 +13,3 @@ def test_make_service_obj(mapping_ims):
     config.make_ims()
 
     assert isinstance(config.ims, IMS)
-
-

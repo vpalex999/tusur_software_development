@@ -30,11 +30,10 @@ def test_init_wp(wp):
 
 
 def test_call_wp_and_return_subscriber_by_dict(wp):
-    
+
     assert len(wp()) == 7
 
 
 def test_make_wp_from_source_subscriber(wp):
 
     assert wp.make() is True
-

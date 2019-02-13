@@ -22,7 +22,7 @@ def wp(config):
 def test_configure_subcription(wp):
 
     assert wp.configure_subcription() is True
-    
+
 
 def test_set_number(wp):
 
@@ -39,21 +39,21 @@ def test_set_number_dn_is_None(wp):
 
 def test_set_number_dn_is_not_String(wp):
     wp.number.dn = 12345
-    
+
     with pytest.raises(Exception):
         wp.set_number()
 
 
 def test_set_number_dn_is_empty_String(wp):
     wp.number.dn = ""
-    
+
     with pytest.raises(Exception):
         wp.set_number()
 
 
 def test_set_number_dn_has_more_than_12_digits(wp):
     wp.number.dn = "1234567890123"
-    
+
     with pytest.raises(Exception):
         wp.set_number()
 
