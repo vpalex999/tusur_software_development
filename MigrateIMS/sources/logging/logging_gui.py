@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Попытка отобразить логирование в виджет Tk """
 
 import os
@@ -34,7 +35,7 @@ class ConsoleUi:
 
     def read_log(self, log_queue):
         """ Читать лог-файл в бесконечном цикле """
-        with open('migrate_info.log') as fo:
+        with open('migrate_info.log', encoding='utf-8') as fo:
             while True:
                 line = fo.readline()
                 if line:
