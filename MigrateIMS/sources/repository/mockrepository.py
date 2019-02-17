@@ -5,7 +5,7 @@ import logging
 from sources.repository.noderepository import NodeRepo
 from sources.domain.nodesubscriber import NodeSubscriber
 from sources.domain.errors import MigrateError
-
+from sources.config.config import *
 
 log_def_subs_repo = logging.getLogger("migrate.defsubsrepo")
 
@@ -54,7 +54,7 @@ class MockRepo(NodeRepo):
 
             for row in self.get_numbers():
                 dn['dn'] = str(int(row['Номер']))
-                dn['type_dn'] = self.config.SIP
+                dn['type_dn'] = SIP
                 dn['password'] = row['Пароль']
                 dn['list_dn_options'] = [row['Категория'].strip()]
                 dn['list_dn_options'].extend([suppl.strip() for suppl in row['Услуги'].split(',')])

@@ -1,4 +1,5 @@
 from sources.config.config import Config
+from sources.config.config import *
 
 
 def test_init_object_Config():
@@ -12,7 +13,7 @@ def test_init_object_Config():
     assert config.mapping_category is None
     assert config.mapping_service is None
     assert config.mapping_ims is None
-    assert config.type_dn == 'SIP'
+    assert config.type_dn == OTHER
 
     assert config.category is None
     assert config.service is None

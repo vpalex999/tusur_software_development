@@ -3,7 +3,7 @@ import copy
 import logging
 from sources.domain.errors import MigrateError
 from utilites.base_64 import B64
-
+from sources.config.config import *
 
 log_wp = logging.getLogger("migrate.web_portal")
 
@@ -504,7 +504,7 @@ class WpDN(object):
 
     def configure_agcf(self):
         """ Конфигурируем Access Gateway Control Function """
-        if self.type_dn == (self.config.PSTN or self.config.ISDN):
+        if self.type_dn == (PSTN or ISDN):
             self.set_type_agcf()
             self.set_node_agcf()
             self.set_uri_type_agcf()
@@ -1287,7 +1287,7 @@ class WpDN(object):
 # ################ Additional parameters needed  for migration ###########################
 
     def configure_ngn(self):
-        if self.type_dn == (self.config.PSTN or self.config.ISDN):
+        if self.type_dn == (PSTN or ISDN):
             self.set_ngn_interface()
             self.set_ngn_access()
             self.set_ngn_access_var()

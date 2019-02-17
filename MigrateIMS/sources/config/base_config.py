@@ -6,22 +6,25 @@ from sources.domain.service import Service
 from sources.domain.ims import IMS
 from sources.domain.errors import MigrateError
 
+# Типы номера
+
+PSTN = 'PSTN'
+ISDN = 'ISDN'
+SIP = 'SIP'
+OTHER = 'OTHER'
+
+ALL_TYPE_DN = [SIP, PSTN, ISDN, OTHER]
+
+# Типы доступных станций. Расширяются по мере добавления обработчиков
+NODE = ['DEMO', 'fake']
+
 
 class BaseConfig(metaclass=ABCMeta):
     """ Класс хранит конфигурационные данные для работы конвертера """
 
-    PSTN = 'PSTN'
-    ISDN = 'ISDN'
-    SIP = 'SIP'
-    OTHER = 'OTHER'
-
-    all_type_dn = [SIP, PSTN, ISDN, OTHER]
-
-    nodes = ['MT20', 'AXE-10']
-
     def __init__(self,
                  node=None,
-                 type_dn='SIP',
+                 type_dn=OTHER,
                  sf_db=None,
                  sd_db=None,
                  mapping_category=None,
@@ -36,7 +39,7 @@ class BaseConfig(metaclass=ABCMeta):
         ---------
         node -- содержит название типа АТС для которой выполняется миграция.
            Все разрешённые типы, для которых возможна обработка данных
-           находятся в классовом атрибуте 'nodes'.
+           находятся в классовом атрибуте 'NODE'.
 
         source_db(list or object) -- исходная база данных номеров. Может содержать
            текстовые данные в формате списка или объект.
@@ -47,7 +50,7 @@ class BaseConfig(metaclass=ABCMeta):
 
         type_dn(str) -- указывается тип обрабатываемых номеров (sip, pstn, other).
            Все разрешённые типы, для которых возможна обработка данных
-           находятся в классовом атрибуте 'all_type_dn'.
+           находятся в классовом атрибуте 'ALL_TYPE_DN'.
         """
         self.node = node
         self.type_dn = type_dn
@@ -81,14 +84,14 @@ class BaseConfig(metaclass=ABCMeta):
 
     def check_node(self):
         """ Проверка названия обрабатываемого типа АТС из списка разрешённых типов """
-        if self.node not in self.nodes:
-            msg = "Unknown type of node: '{}', Please select from this list'{}'".format(self.node, self.nodes)
+        if self.node not in NODE:
+            msg = "Unknown type of node: '{}', Please select from this list'{}'".format(self.node, NODE)
             raise MigrateError(msg)
 
     def check_type_dn(self):
         """ Проверка хранения допустимого типа в атрибуте type_dn """
-        if self.type_dn not in self.all_type_dn:
-            raise MigrateError(f"The type_dn should be in: {self.all_type_dn}")
+        if self.type_dn not in ALL_TYPE_DN:
+            raise MigrateError(f"The type_dn should be in: {ALL_TYPE_DN}")
 
     def check_source_db(self):
         """ Проверка наличия исходной БД """

@@ -1,13 +1,13 @@
 
 from sources.shared.domain_model import DomainModel
 from sources.domain.base_repr import BaseRepr
-from sources.config.config import Config
+from sources.config.config import *
 
 
 class NodeSubscriber(BaseRepr):
 
     def __init__(self, dn,
-                 type_dn=Config.OTHER,
+                 type_dn=OTHER,
                  password="",
                  interface=None,
                  access=None,
@@ -23,7 +23,7 @@ class NodeSubscriber(BaseRepr):
     def from_dict(cls, adict):
         def_subs = NodeSubscriber(
             dn=adict['dn'],
-            type_dn=adict.get('type_dn', Config.OTHER),
+            type_dn=adict.get('type_dn', OTHER),
             password=adict.get('password', ''),
             interface=adict.get('interface'),
             access=adict.get('access'),

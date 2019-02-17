@@ -69,4 +69,4 @@ class MainInteractor(object):
 
     def execute(self):
         self.make_subscribers()
-        return self.list_subscribers()
+        return self

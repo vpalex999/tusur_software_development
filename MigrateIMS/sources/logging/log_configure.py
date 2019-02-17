@@ -28,20 +28,28 @@ _config = {
             "formatter": "console_formatter",
             "stream": "ext://sys.stdout"
         },
-
-        "file_handler": {
+        "file_debug": {
             "class": "logging.handlers.RotatingFileHandler",
             "level": "DEBUG",
             "formatter": "file_formatter",
-            "filename": "migrate.log",
+            "filename": "migrate_debug.log",
             "maxBytes": 10485760,
-            "backupCount": 20,
+            "backupCount": 5,
+            "encoding": "utf8"
+        },
+        "file_info": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "level": "INFO",
+            "formatter": "file_formatter",
+            "filename": "migrate_info.log",
+            "maxBytes": 10485760,
+            "backupCount": 5,
             "encoding": "utf8"
         }
     },
     "root": {
         "level": "DEBUG",
-        "handlers": ["file_handler", "console"]
+        "handlers": ["file_debug", "file_info", "console"]
     }
 }
 
