@@ -34,14 +34,13 @@ class ConsoleUi:
 
     def read_log(self, log_queue):
         """ Читать лог-файл в бесконечном цикле """
-        logfile = os.open('migrate_info.log', os.O_RDONLY|os.O_NONBLOCK)
-        fo = os.fdopen(logfile)
-        while True:
-            line = fo.readline()
-            if line:
-                self.log_queue.put(line)
-            else:
-                time.sleep(0.1)
+        with open('migrate_info.log') as fo:
+            while True:
+                line = fo.readline()
+                if line:
+                    self.log_queue.put(line)
+                else:
+                    time.sleep(0.1)
 
     def threads(self):
         _thread.start_new_thread(self.read_log, (self.log_queue,))
