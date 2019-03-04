@@ -52,7 +52,7 @@ def run_migrate(gui_config):
 
 def main_win():
     root = Tk()
-    win = AppWindow(run_migrate, root)
+    AppWindow(run_migrate, root)
     root.mainloop()
 
 
