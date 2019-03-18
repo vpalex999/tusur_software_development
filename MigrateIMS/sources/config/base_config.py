@@ -16,7 +16,7 @@ OTHER = 'OTHER'
 ALL_TYPE_DN = [SIP, PSTN, ISDN, OTHER]
 
 # Типы доступных станций. Расширяются по мере добавления обработчиков
-NODE = ['DEMO', 'fake']
+NODE = ['DEMO']
 
 
 class BaseConfig(metaclass=ABCMeta):
