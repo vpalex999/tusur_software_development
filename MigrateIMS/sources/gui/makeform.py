@@ -24,11 +24,11 @@ def formOpenFile(parent, label, width=25, browse=True, ext_var=''):
     if browse:
         btn = Button(row, text='browse...')
         btn.pack(side=RIGHT)
-        btn.config(command=lambda: var.set(askopenfilename(initialdir='.') or var.get()))
+        btn.config(command=lambda: var.set(askopenfilename() or var.get()))
     return var
 
 
-def formOpenDir(parent, label, width=25, browse=True, ext_var='.'):
+def formOpenDir(parent, label, width=25, browse=True, ext_var=''):
     """
     создает фрейм-ряд с меткой и полем ввода и дополнительной кнопкой,
     вызывающей диалог выбора Директории
@@ -44,7 +44,7 @@ def formOpenDir(parent, label, width=25, browse=True, ext_var='.'):
     if browse:
         btn = Button(row, text='browse...')
         btn.pack(side=RIGHT)
-        btn.config(command=lambda: var.set(askdirectory(initialdir='.') or var.get()))
+        btn.config(command=lambda: var.set(askdirectory() or var.get()))
     return var
 
 
