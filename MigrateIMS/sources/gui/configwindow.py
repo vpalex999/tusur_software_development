@@ -14,7 +14,7 @@ class config_from_gui(Toplevel):
         Toplevel.__init__(self, width=40, height=10, relief=SUNKEN)
         self.title('Config MigrateIMS')
 
-        self.button_ok = Button(self, text='OK', command=self.check_fields)
+        self.button_ok = Button(self, text='OK', command=self.close_config_window)
         self.button_ok.pack(side=BOTTOM)
 
         self.node = optionMenu(self, NODE, label='Тип АТС',
@@ -33,18 +33,34 @@ class config_from_gui(Toplevel):
             self,      label='Шаблон IMS          ', ext_var=gui_config.get("mapping_ims", ''))
 
     def check_fields(self):
-        if self.check_range_fields("Папка выгрузки", self.dest_dir.get()):
-            if not os.path.isdir(self.dest_dir.get()):
-                showerror("Config: Папка выгрузки", "Указана несуществующая директория:\n{}".format(self.dest_dir.get()))
-            elif self.check_range_fields("База Данных АТС", self.sourse_file_db.get()):
-                if self.check_is_file("База Данных АТС", self.sourse_file_db.get()):
-                    if self.check_range_fields("Шаблон Категорий АОН", self.mapping_category.get()):
-                        if self.check_is_file("Шаблон Категорий АОН", self.mapping_category.get()):
-                            if self.check_range_fields("Шаблон Услуг", self.mapping_service.get()):
-                                if self.check_is_file("Шаблон Услуг", self.mapping_service.get()):
-                                    if not self.check_range_fields("Шаблон IMS", self.mapping_ims.get()):
-                                        if not self.check_is_file("Шаблон IMS", self.mapping_ims.get()):
-                                            self.destroy()
+        """ проверка полей ввода"""
+        if not self.check_range_fields("Папка выгрузки", self.dest_dir.get()):
+            return
+        if not os.path.isdir(self.dest_dir.get()):
+            showerror("Config: Папка выгрузки", "Указана несуществующая директория:\n{}".format(self.dest_dir.get()))
+            return
+        if not self.check_range_fields("База Данных АТС", self.sourse_file_db.get()):
+            return
+        if not self.check_is_file("База Данных АТС", self.sourse_file_db.get()):
+            return
+        if not self.check_range_fields("Шаблон Категорий АОН", self.mapping_category.get()):
+            return
+        if not self.check_is_file("Шаблон Категорий АОН", self.mapping_category.get()):
+            return
+        if not self.check_range_fields("Шаблон Услуг", self.mapping_service.get()):
+            return
+        if not self.check_is_file("Шаблон Услуг", self.mapping_service.get()):
+            return
+        if not self.check_range_fields("Шаблон IMS", self.mapping_ims.get()):
+            return
+        if not self.check_is_file("Шаблон IMS", self.mapping_ims.get()):
+            return
+        return True
+
+    def close_config_window(self):
+        """ Закрыть окно конфигурирования с проверкой полей ввода """
+        if self.check_fields():
+            self.destroy()
 
     def check_range_fields(self, field_name, field_text):
         """ Проверка на границы длинны поля """
