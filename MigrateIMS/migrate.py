@@ -37,11 +37,11 @@ def run_migrate(gui_config):
     MainInteractor(main_repo, node_repo, config).execute()
 
     wp_list = [WpDN(dn, config)() for dn in main_repo.list(filters={'type_dn': "SIP"})]
-    wiev = ViewWP(wp_list)
+    view_wp = ViewWP(wp_list)
 
     try:
         file_name_wp = os.path.join(config.dest_dir, 'web_portal.txt')
-        open(os.path.join(config.dest_dir, file_name_wp), 'w').writelines(wiev())
+        open(os.path.join(config.dest_dir, file_name_wp), 'w').writelines(view_wp())
         logging.info("Successful writing file: {}".format(file_name_wp))
     except Exception as e:
         logging.error('Failed to write file', exc_info=True)
