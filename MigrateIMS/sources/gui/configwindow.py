@@ -8,7 +8,7 @@ from sources.config.config import *
 import logging
 
 
-class config_from_gui(Toplevel):
+class ConfigWindow(Toplevel):
 
     def __init__(self, gui_config={}):
         Toplevel.__init__(self, width=40, height=10, relief=SUNKEN)
@@ -94,5 +94,5 @@ class config_from_gui(Toplevel):
 
 def config_window(gui_config):
     """ Модальное окно настройки конфигурации """
-    gui_config.update(config_from_gui(gui_config)())
+    gui_config.update(ConfigWindow(gui_config)())
     logging.debug("Get Config: " + str(gui_config))

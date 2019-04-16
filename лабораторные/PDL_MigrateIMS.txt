@@ -1,0 +1,121 @@
+
+MigrateIMS: procedure;
+    // do  инициализировать графическое приложение;
+    call main_win;
+    //do  записать результат обработки в файл;
+    write_wp;
+    end MigrateIMS;
+
+
+main_win (run_migrate): procedure // Запускает формирование главного окна
+
+    declare 1 config;                             // словарь атрибутов конфигурации
+              2 node: string [250];             // тип АТС
+              2 type_dn: string [250];          // тип обрабатываемых номеров
+              2 dest_dir: string [250];         // директория выгрузки данных
+              2 sourse_file_db: string [250];   // имя файла с БД
+              2 mapping_category: string [250]; // имя файла с шаблоном категорий
+              2 mapping_service: string [250];  // имя файла с шаблоном услуг
+              2 mapping_ims: string [250];      // имя файла с шаблоним IMS
+
+    call view_log;  // Вывод логирования действий на экран
+
+    do case (кнопка)
+        //do  выполнить конвертирование;
+        "RUN": call run_migrate (config); // запустить скрипт миграции
+        //do  получить конфигурационные данные;
+        "Config": call config_window(config); // открыть графическую форму настройки конфигурации
+        "Quit": call Exit; // завершить работу приложения
+    end do;
+end main_win;
+
+
+run_migrate (config): procedure // запуск скрипта миграции
+    begin
+        // создается объект-хранилище для исходной базы номеров АТС
+        declare node_repo: type (BaseRepo);
+        // создаётся объект-хранилище для хранения обработанной базы номеров IMS
+        declare main_repo: type(ImsSubsRepo);
+        // выполнить обработку исходной БД
+        call node_repo(config);
+        // выполнить конвертирование номеров по заданному алгоритму
+        call main_interactor(main_repo, node_repo, config);
+        // выполнить запись результатов в файл
+        call write_wp(main_repo, config);
+    end;
+end run_migrate;
+
+
+config_window: procedure (config); // графическая форма настройки конфигурации
+    begin
+        declare btn: кнопка;
+        declare select_node: селектор выбора типа АТС;
+        declare select_type_number: селектор выбора типа обрабатываемых номеров;
+        declare field_1: поле ввода для указания директории выгрузки данных;
+        declare field_2: поле ввода для указания исходного файла с БД;
+        declare field_3: поле ввода для указания исходного файла с шаблоном категорий;
+        declare field_4: поле ввода для указания исходного файла с шаблоном услуг;
+        declare field_5: поле ввода для указания исходного файла с шаблоним IMS;
+
+        get(btn);
+        do case (btn)
+            "Кнопка OK": call return_config(); // возврать конфиг и закрыть окно
+            "Кнопка Х": call exit; // закрыть окно конфигурации
+            end do;
+
+        return_config: procedure; // возврать конфиг и закрыть окно
+
+            if check_fields() есть истинна; // проверка полей ввода
+            then 
+                call add_to_dict(); // добавить атрибуты в словарь конфигурации
+                call exit(); // закрыть окно конфигурации
+
+            check_fields: procedure; // Процедура проверки полей ввода
+
+            get (field_1)
+            if (field_1 < 0 or field_1 > 250 or field_1 не найдена указанная директория);
+            then
+                call show_alarm (field_1);
+                return False;  // неуспешная проверка
+
+            get (field_2)
+            if (field_2 < 0 or field_2 > 250 or field_2 не найден указанный файл);
+            then
+                call show_alarm (field_2);
+                return False;  // неуспешная проверка
+
+            get (field_3)
+            if (field_3 < 0 or field_3 > 250 or field_3 не найден указанный файл);
+            then
+                call show_alarm (field_3);
+                return False;  // неуспешная проверка
+
+            get (field_4)
+            if (field_4 < 0 or field_4 > 250 or field_4 не найден указанный файл);
+            then
+                call show_alarm (field_4);
+                return False;  // неуспешная проверка
+
+            get (field_5)
+            if (field_5 < 0 or field_5 > 250 or field_5 не найден указанный файл);
+            then
+                call show_alarm (field_5);
+                return False;  // неуспешная проверка
+
+            return True; // возвратить истину
+
+
+            add_to_dict: procedure;  // Добавить атрибуты в словарь конфигурации
+                добавить select_node в dict;
+                добавить select_type_number в dict;
+                добавить field_1 в dict;
+                добавить field_2 в dict;
+                добавить field_3 в dict;
+                добавить field_4 в dict;
+                добавить field_5 в dict;
+
+            show_alarm: procedure; // отображает графическое окно с информацией об ошибке
+
+            exit: procedure; // Закрывает окно конфигурации
+    end;
+end config_window;
