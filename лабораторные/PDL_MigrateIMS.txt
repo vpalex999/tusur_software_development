@@ -6,10 +6,10 @@ MigrateIMS: procedure;
     write_wp;
     end MigrateIMS;
 
+// Запускает формирование главного окна
+main_win (run_migrate): procedure
 
-main_win (run_migrate): procedure // Запускает формирование главного окна
-
-    declare 1 config;                             // словарь атрибутов конфигурации
+    declare 1 config;                           // словарь атрибутов конфигурации
               2 node: string [250];             // тип АТС
               2 type_dn: string [250];          // тип обрабатываемых номеров
               2 dest_dir: string [250];         // директория выгрузки данных
@@ -45,77 +45,93 @@ run_migrate (config): procedure // запуск скрипта миграции
     end;
 end run_migrate;
 
-
-config_window: procedure (config); // графическая форма настройки конфигурации
+// графическая форма настройки конфигурации
+config_window: procedure (config); 
     begin
-        declare btn: кнопка;
-        declare select_node: селектор выбора типа АТС;
-        declare select_type_number: селектор выбора типа обрабатываемых номеров;
-        declare field_1: поле ввода для указания директории выгрузки данных;
-        declare field_2: поле ввода для указания исходного файла с БД;
-        declare field_3: поле ввода для указания исходного файла с шаблоном категорий;
-        declare field_4: поле ввода для указания исходного файла с шаблоном услуг;
-        declare field_5: поле ввода для указания исходного файла с шаблоним IMS;
+        declare field_select_node;          // графический элемент-селектор
+        declare field_select_type_number;   // графический элемент-селектор
+        declare field_1;                    // графический элемент-поле ввода
+        declare field_2;                    // графический элемент-поле ввода
+        declare field_3;                    // графический элемент-поле ввода
+        declare field_4;                    // графический элемент-поле ввода
+        declare field_5;                    // графический элемент-поле ввода
 
-        get(btn);
-        do case (btn)
-            "Кнопка OK": call return_config(); // возврать конфиг и закрыть окно
+        do case (кнопка)
+            "Кнопка OK": call return_config(config); // возврать конфиг и закрыть окно
             "Кнопка Х": call exit; // закрыть окно конфигурации
             end do;
 
-        return_config: procedure; // возврать конфиг и закрыть окно
+        // возврать конфиг и закрыть окно
+        return_config: procedure (config);
+            begin
+                if check_fields() есть истинна; // проверка полей ввода
+                then 
+                    call add_to_config(config); // добавить атрибуты в словарь конфигурации
+                    call Exit; // закрыть окно конфигурации
+            end;
+        end return_config;
 
-            if check_fields() есть истинна; // проверка полей ввода
-            then 
-                call add_to_dict(); // добавить атрибуты в словарь конфигурации
-                call exit(); // закрыть окно конфигурации
+        // Процедура проверки полей ввода
+        check_fields: procedure RETURNS (BOOL);
+            begin
 
-            check_fields: procedure; // Процедура проверки полей ввода
+                // поле директория выгрузки данных
+                get (field_1)       
+                if (field_1 < 0 or field_1 > 250 or field_1 не найдена указанная директория);
+                then
+                    call show_alarm (field_1);
+                    return False;   // неуспешная проверка
 
-            get (field_1)
-            if (field_1 < 0 or field_1 > 250 or field_1 не найдена указанная директория);
-            then
-                call show_alarm (field_1);
-                return False;  // неуспешная проверка
+                // имя файла с БД
+                get (field_2)
+                if (field_2 < 0 or field_2 > 250 or field_2 не найден указанный файл);
+                then
+                    call show_alarm (field_2);
+                    return False;   // неуспешная проверка
 
-            get (field_2)
-            if (field_2 < 0 or field_2 > 250 or field_2 не найден указанный файл);
-            then
-                call show_alarm (field_2);
-                return False;  // неуспешная проверка
+                // имя файла с шаблоном категорий
+                get (field_3)
+                if (field_3 < 0 or field_3 > 250 or field_3 не найден указанный файл);
+                then
+                    call show_alarm (field_3);
+                    return False;   // неуспешная проверка
 
-            get (field_3)
-            if (field_3 < 0 or field_3 > 250 or field_3 не найден указанный файл);
-            then
-                call show_alarm (field_3);
-                return False;  // неуспешная проверка
+                // имя файла с шаблоном услуг
+                get (field_4)
+                if (field_4 < 0 or field_4 > 250 or field_4 не найден указанный файл);
+                then
+                    call show_alarm (field_4);
+                    return False;   // неуспешная проверка
 
-            get (field_4)
-            if (field_4 < 0 or field_4 > 250 or field_4 не найден указанный файл);
-            then
-                call show_alarm (field_4);
-                return False;  // неуспешная проверка
+                // имя файла с шаблоним IMS
+                get (field_5)
+                if (field_5 < 0 or field_5 > 250 or field_5 не найден указанный файл);
+                then
+                    call show_alarm (field_5);
+                    return False;   // неуспешная проверка
 
-            get (field_5)
-            if (field_5 < 0 or field_5 > 250 or field_5 не найден указанный файл);
-            then
-                call show_alarm (field_5);
-                return False;  // неуспешная проверка
+                return True; // возвратить истину
+            end;
+        end check_fields;
 
-            return True; // возвратить истину
+        // Добавить атрибуты в словарь конфигурации
+        add_to_config: procedure;
+            begin
+                config.node = get(field_select_node);
+                config.type_dn = get(field_select_type_number);
+                config.dest_dir = get(field_1);
+                config.sourse_file_db = get(field_2);
+                config.mapping_category = get(field_3);
+                config.mapping_service = get(field_4);
+                config.mapping_ims = get(field_5);
+            end;
+        end add_to_config;
 
-
-            add_to_dict: procedure;  // Добавить атрибуты в словарь конфигурации
-                добавить select_node в dict;
-                добавить select_type_number в dict;
-                добавить field_1 в dict;
-                добавить field_2 в dict;
-                добавить field_3 в dict;
-                добавить field_4 в dict;
-                добавить field_5 в dict;
-
-            show_alarm: procedure; // отображает графическое окно с информацией об ошибке
-
-            exit: procedure; // Закрывает окно конфигурации
+        // отображает графическое окно с информацией об ошибке
+        show_alarm: procedure (description); 
+            degin
+                показать графическое окно с информацией об ошибке
+            end;
+        end show_alarm;
     end;
 end config_window;
