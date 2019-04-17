@@ -1,14 +1,9 @@
 
-MigrateIMS: procedure;
-    // do  инициализировать графическое приложение;
-    call main_win;
-    //do  записать результат обработки в файл;
-    write_wp;
-    end MigrateIMS;
 
-// Запускает формирование главного окна
-main_win (run_migrate): procedure
+Внешняя спецификация
 
+main_win: procedure;
+    // объявить структуру, содержащую конфигурационные данные
     declare 1 config;                           // словарь атрибутов конфигурации
               2 node: string [250];             // тип АТС
               2 type_dn: string [250];          // тип обрабатываемых номеров
@@ -18,19 +13,41 @@ main_win (run_migrate): procedure
               2 mapping_service: string [250];  // имя файла с шаблоном услуг
               2 mapping_ims: string [250];      // имя файла с шаблоним IMS
 
-    call view_log;  // Вывод логирования действий на экран
+    // Запустить вывод логирования работы на экран
+    call show_log;
 
+    // обработка кнопок формы
     do case (кнопка)
         //do  выполнить конвертирование;
-        "RUN": call run_migrate (config); // запустить скрипт миграции
+        "кнопка RUN": call run_migrate (config); // запустить скрипт миграции
         //do  получить конфигурационные данные;
-        "Config": call config_window(config); // открыть графическую форму настройки конфигурации
-        "Quit": call Exit; // завершить работу приложения
+        "кнопка Config": call config_window(config); // открыть графическую форму настройки конфигурации
+        "кнопка Quit": call Exit; // завершить работу приложения
     end do;
 end main_win;
 
 
-run_migrate (config): procedure // запуск скрипта миграции
+Внутреняя спецификация
+
+//  Вывод логирования действий программы на экран
+show_log: procedure;
+    begin
+        declare queue;  // структура-очередь
+        // запустить чтение лог-файл в бесконечном цикле
+        call read_log;
+        // запустить отображение данных из очереди на экран в бесконечном цикле
+        call pull_display_from_log;
+    end;
+end show_log;
+
+// Процедура чтения лог-файл в бесконечном цикле
+read_log: procedure;
+
+// Процедура забирает из очереди данные и выводит на экран в бесконечном цикле
+pull_display_from_log: procedure;
+
+// Процедура запускает скрипт миграции абонентов
+run_migrate (config): procedure
     begin
         // создается объект-хранилище для исходной базы номеров АТС
         declare node_repo: type (BaseRepo);
@@ -45,7 +62,23 @@ run_migrate (config): procedure // запуск скрипта миграции
     end;
 end run_migrate;
 
-// графическая форма настройки конфигурации
+
+// Процедура выполняет запись обработанных данных о номерах в файл
+write_wp: procedure (main_repo, config);
+    begin
+    declare wp_list; // массив для хранения списка номеров для обработки
+    declare view_wp; // массив для хранения обработанного списка номеров
+
+    // получить из репозитория список номеров по критерию
+    wp_list = get(получить из main_repo список номеров по критерию config.type_dn)
+    // сформировать формат представления данных для записи в файл
+    view_wp = get(call функция_представления_данных_для_записи_в_текстовый_файла (wp_list))
+    // записать конечные данные в файл
+    call write_file (config.dest_dir, 'имя_файла', view_wp);
+    end;
+end write_wp
+
+// Процедура графического окна формы конфигурации
 config_window: procedure (config); 
     begin
         declare field_select_node;          // графический элемент-селектор
@@ -135,3 +168,7 @@ config_window: procedure (config);
         end show_alarm;
     end;
 end config_window;
+
+
+// Процедура завершения работы приложения
+Exit: procedure;
